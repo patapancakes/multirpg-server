@@ -39,8 +39,9 @@ func (p *Packet) handleSwitchRoom(switchRoom protocol.SwitchRoom) error {
 		return fmt.Errorf("room not found")
 	}
 
-	delete(p.sender.room.server.rooms[p.sender.room.id].clients, p.sender.id) // remove from old room
+	p.sender.handleDisconnect() // remove from old room and broadcast disconnect packet
 	p.sender.room = p.sender.room.server.rooms[switchRoom.Id] // set client room to new room
+	p.sender.handleConnect() // get room data and broadcast connect packet
 	p.sender.room.server.rooms[switchRoom.Id].clients[p.sender.id] = p.sender // add to new room
 
 	return nil
