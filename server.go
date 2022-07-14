@@ -42,6 +42,6 @@ func (s *Server) handleConnection(conn net.Conn) {
 
 	client.listen()
 
-	fmt.Println("Connection from " + client.conn.RemoteAddr().String() + " closed")
+	fmt.Println("Connection from " + conn.RemoteAddr().String() + " closed")
 	delete(s.rooms[client.room.id].clients, client.id)
 }
