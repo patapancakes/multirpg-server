@@ -41,7 +41,7 @@ func getCharSetList() []string {
 	return charsets
 }
 
-func getSoundList() []string {
+/*func getSoundList() []string {
 	files, err := os.ReadDir("Sound")
 	if err != nil {
 		panic(err)
@@ -67,7 +67,7 @@ func getSystemList() []string {
 	}
 
 	return systems
-}
+}*/
 
 func isValidCharSet(charset string) bool {
 	for _, char := range getCharSetList() {
