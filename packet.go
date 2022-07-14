@@ -62,7 +62,7 @@ func (p *Packet) handleSprite(sprite protocol.Sprite) error {
 	p.sender.sprite = sprite.Name
 	p.sender.spriteIndex = sprite.Index
 
-	p.sender.room.broadcast(packet)
+	p.sender.room.broadcast(packet, p.sender)
 
 	return nil
 }
@@ -83,7 +83,7 @@ func (p *Packet) handleMove(move protocol.Move) error {
 	p.sender.y = move.Y
 	p.sender.direction = move.Direction
 
-	p.sender.room.broadcast(packet)
+	p.sender.room.broadcast(packet, p.sender)
 
 	return nil
 }
@@ -102,7 +102,7 @@ func (p *Packet) handleSpeed(speed protocol.Speed) error {
 
 	p.sender.speed = speed.Speed
 
-	p.sender.room.broadcast(packet)
+	p.sender.room.broadcast(packet, p.sender)
 
 	return nil
 }

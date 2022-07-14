@@ -100,7 +100,7 @@ func (c *Client) handleConnect() {
 		fmt.Println(err)
 	}
 
-	c.room.broadcast(packet)
+	c.room.broadcast(packet, c)
 }
 
 func (c *Client) handleDisconnect() {
@@ -111,5 +111,5 @@ func (c *Client) handleDisconnect() {
 		fmt.Println(err)
 	}
 
-	c.room.broadcast(packet)
+	c.room.broadcast(packet, c)
 }

@@ -24,8 +24,12 @@ func (r *Room) getFreeId() uint16 {
 	return 0
 }
 
-func (r *Room) broadcast(data []byte) {
+func (r *Room) broadcast(data []byte, sender *Client) {
 	for _, client := range r.clients {
+		if client == sender {
+			continue
+		}
+
 		client.conn.Write(data)
 	}
 }
