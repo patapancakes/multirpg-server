@@ -20,7 +20,7 @@ func encode(data interface{}) ([]byte, error) {
 	case Speed:
 		return encodeSpeed(data)
 	default:
-		return nil, fmt.Errorf("unknown message type: %T", data)
+		return nil, fmt.Errorf("unknown packet type: %T", data)
 	}
 }
 

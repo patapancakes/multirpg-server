@@ -17,11 +17,11 @@ func (c *Client) listen() {
 			return
 		}
 
-		message := &Message{
+		packet := &Packet{
 			sender: c,
 			data: buf[:n],
 		}
 
-		go message.process()
+		go packet.process()
 	}
 }
