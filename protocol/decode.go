@@ -29,7 +29,7 @@ func decodeSwitchRoom(data []byte) (interface{}, error) {
 }
 
 func decodeSprite(data []byte) (interface{}, error) {
-	if len(data) < 6 {
+	if len(data) < 5 {
 		return nil, fmt.Errorf("invalid packet length: %d", len(data))
 	}
 
