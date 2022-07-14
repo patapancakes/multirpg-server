@@ -45,13 +45,3 @@ func (s *Server) handleConnection(conn net.Conn) {
 	fmt.Println("Connection from " + client.conn.RemoteAddr().String() + " closed")
 	delete(s.rooms[client.room.id].clients, client.id)
 }
-
-func (r *Room) getFreeId() uint16 {
-	for i := uint16(1); i < 0xFFFF; i++ {
-		if _, ok := r.clients[i]; !ok {
-			return i
-		}
-	}
-
-	return 0
-}

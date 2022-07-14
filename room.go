@@ -11,3 +11,13 @@ func createRoom(id uint16) *Room {
 		clients: make(map[uint16]*Client),
 	}
 }
+
+func (r *Room) getFreeId() uint16 {
+	for i := uint16(1); i < 0xFFFF; i++ {
+		if _, ok := r.clients[i]; !ok {
+			return i
+		}
+	}
+
+	return 0
+}
