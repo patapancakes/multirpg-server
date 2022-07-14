@@ -11,12 +11,6 @@ func main() {
 		rooms: make(map[uint16]*Room),
 	}
 
-	server.rooms[0] = createRoom(0)
-
-	for _, mapID := range getMapList() {
-		server.rooms[mapID] = createRoom(mapID)
-	}
-
 	if err := server.start(readFlags()); err != nil {
 		fmt.Println(err)
 		os.Exit(1)

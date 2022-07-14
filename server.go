@@ -12,6 +12,12 @@ type Server struct {
 func (s *Server) start(host *string, port *int) error {
 	fmt.Println("Starting server on " + *host + ":" + fmt.Sprint(*port))
 
+	s.rooms[0] = createRoom(0)
+
+	for _, mapID := range getMapList() {
+		s.rooms[mapID] = createRoom(mapID)
+	}
+
 	server, err := net.Listen("tcp", fmt.Sprintf("%s:%d", *host, *port))
 	if err != nil {
 		return err
