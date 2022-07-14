@@ -18,6 +18,8 @@ func (p *Packet) recieve() {
 	}
 
 	switch packet := packet.(type) {
+	case protocol.SwitchRoom:
+		err = p.handleSwitchRoom(packet)
 	case protocol.Sprite:
 		err = p.handleSprite(packet)
 	case protocol.Move:
@@ -30,6 +32,18 @@ func (p *Packet) recieve() {
 	if err != nil {
 		fmt.Println(err)
 	}
+}
+
+func (p *Packet) handleSwitchRoom(switchRoom protocol.SwitchRoom) error {
+	if p.sender.room.server.rooms[switchRoom.Id] == nil {
+		return fmt.Errorf("room not found")
+	}
+
+	delete(p.sender.room.server.rooms[p.sender.room.id].clients, p.sender.id) // remove from old room
+	p.sender.room = p.sender.room.server.rooms[switchRoom.Id] // set client room to new room
+	p.sender.room.server.rooms[switchRoom.Id].clients[p.sender.id] = p.sender // add to new room
+
+	return nil
 }
 
 func (p *Packet) handleSprite(sprite protocol.Sprite) error {

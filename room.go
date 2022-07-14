@@ -1,12 +1,14 @@
 package main
 
 type Room struct {
+	server *Server
 	id uint16
 	clients map[uint16]*Client
 }
 
-func createRoom(id uint16) *Room {
+func (s *Server) createRoom(id uint16) *Room {
 	return &Room{
+		server: s,
 		id: id,
 		clients: make(map[uint16]*Client),
 	}
