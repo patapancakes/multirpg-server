@@ -1,5 +1,13 @@
 package main
 
+import "net"
+
+type Client struct {
+	conn net.Conn
+	room *Room
+	id uint16
+}
+
 func (c *Client) listen() {
 	for	{
 		buf := make([]byte, 1024)

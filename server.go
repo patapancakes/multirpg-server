@@ -5,6 +5,10 @@ import (
 	"net"
 )
 
+type Server struct {
+	rooms map[uint16]*Room
+}
+
 func (s *Server) start(host *string, port *int) error {
 	fmt.Println("Starting server on " + *host + ":" + fmt.Sprint(*port))
 
