@@ -30,7 +30,6 @@ func (s *Server) start(host *string, port *int) error {
 		}
 
 		fmt.Println("Connection from " + conn.RemoteAddr().String())
-
 		go s.handleConnection(conn)
 	}
 }
