@@ -1,5 +1,7 @@
 package main
 
+import "net"
+
 type Server struct {
 	rooms map[uint16]*Room
 }
@@ -10,6 +12,12 @@ type Room struct {
 }
 
 type Client struct {
-	id uint16
+	conn net.Conn
 	room *Room
+	id uint16
+}
+
+type Message struct {
+	sender *Client
+	data []byte
 }

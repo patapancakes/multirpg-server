@@ -26,5 +26,28 @@ func (s *Server) start(host *string, port *int) error {
 }
 
 func (s *Server) handleConnection(conn net.Conn) {
+	defer conn.Close()
 
+	client := &Client{
+		conn: conn,
+		room: s.rooms[0],
+		id: s.rooms[0].getFreeId(),
+	}
+
+	s.rooms[0].clients[client.id] = client
+
+	client.listen()
+
+	fmt.Println("Connection from " + client.conn.RemoteAddr().String() + " closed")
+	delete(s.rooms[client.room.id].clients, client.id)
+}
+
+func (r *Room) getFreeId() uint16 {
+	for i := uint16(1); i < 0xFFFF; i++ {
+		if _, ok := r.clients[i]; !ok {
+			return i
+		}
+	}
+
+	return 0
 }

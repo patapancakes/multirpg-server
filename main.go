@@ -11,6 +11,11 @@ func main() {
 		rooms: make(map[uint16]*Room),
 	}
 
+	server.rooms[0] = &Room{
+		id: 0,
+		clients: make(map[uint16]*Client),
+	}
+
 	for _, mapID := range getMapList() {
 		server.rooms[mapID] = &Room{
 			id: mapID,
