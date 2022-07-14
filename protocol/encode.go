@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-func encode(data interface{}) ([]byte, error) {
+func Encode(data interface{}) ([]byte, error) {
 	switch data := data.(type) {
 	case Connect:
 		return encodeConnect(data)

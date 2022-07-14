@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-func decode(data []byte) (interface{}, error) {
+func Decode(data []byte) (interface{}, error) {
 	switch data[0] {
 	case SWITCH_ROOM:
 		return decodeSwitchRoom(data)
