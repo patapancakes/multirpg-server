@@ -68,3 +68,13 @@ func getSystemList() []string {
 
 	return systems
 }
+
+func isValidCharSet(charset string) bool {
+	for _, char := range getCharSetList() {
+		if char == charset {
+			return true
+		}
+	}
+
+	return false
+}

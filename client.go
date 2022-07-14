@@ -6,6 +6,15 @@ type Client struct {
 	conn net.Conn
 	room *Room
 	id uint16
+
+	sprite []byte
+	spriteIndex uint8
+
+	x uint16
+	y uint16
+	direction uint8
+
+	speed uint8
 }
 
 func (c *Client) listen() {
@@ -22,6 +31,6 @@ func (c *Client) listen() {
 			data: buf[:n],
 		}
 
-		go packet.process()
+		go packet.recieve()
 	}
 }
