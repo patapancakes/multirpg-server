@@ -11,8 +11,8 @@ func Decode(data []byte) (interface{}, error) {
 		return decodeSwitchRoom(data)
 	case SPRITE:
 		return decodeSprite(data)
-	case MOVE:
-		return decodeMove(data)
+	case POSITION:
+		return decodePosition(data)
 	case SPEED:
 		return decodeSpeed(data)
 	default:
@@ -41,12 +41,12 @@ func decodeSprite(data []byte) (interface{}, error) {
 	return Sprite{Name: data[2:2+nameLength], Index: uint8(data[2+nameLength:][0])}, nil
 }
 
-func decodeMove(data []byte) (interface{}, error) {
+func decodePosition(data []byte) (interface{}, error) {
 	if len(data) != 6 {
 		return nil, fmt.Errorf("invalid packet length: %d", len(data))
 	}
 
-	return Move{X: binary.LittleEndian.Uint16(data[2:3]), Y: binary.LittleEndian.Uint16(data[3:5]), Direction: uint8(data[5:][0])}, nil
+	return Position{X: binary.LittleEndian.Uint16(data[2:3]), Y: binary.LittleEndian.Uint16(data[3:5]), Direction: uint8(data[5:][0])}, nil
 }
 
 func decodeSpeed(data []byte) (interface{}, error) {

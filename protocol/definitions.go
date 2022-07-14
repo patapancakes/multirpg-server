@@ -5,7 +5,7 @@ const (
 	DISCONNECT = 0x02
 	SWITCH_ROOM = 0x03
 	SPRITE = 0x10
-	MOVE = 0x11
+	POSITION = 0x11
 	SPEED = 0x12
 )
 
@@ -32,7 +32,7 @@ type Sprite struct {
 }
 
 //0x11
-type Move struct {
+type Position struct {
 	Id uint16
 	X uint16
 	Y uint16

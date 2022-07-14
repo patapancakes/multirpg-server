@@ -15,8 +15,8 @@ func Encode(data interface{}) ([]byte, error) {
 		return encodeSwitchRoom(data)
 	case Sprite:
 		return encodeSprite(data)
-	case Move:
-		return encodeMove(data)
+	case Position:
+		return encodePosition(data)
 	case Speed:
 		return encodeSpeed(data)
 	default:
@@ -58,7 +58,7 @@ func encodeSprite(data Sprite) ([]byte, error) {
 	return append(append(append(append([]byte{SPRITE}, id...), byte(len(data.Name))), name...), index...), nil
 }
 
-func encodeMove(data Move) ([]byte, error) {
+func encodePosition(data Position) ([]byte, error) {
 	id := make([]byte, 2)
 	binary.LittleEndian.PutUint16(id, data.Id)
 
@@ -71,7 +71,7 @@ func encodeMove(data Move) ([]byte, error) {
 	direction := make([]byte, 1)
 	direction[0] = byte(data.Direction)
 
-	return append(append(append(append([]byte{MOVE}, id...), x...), y...), direction...), nil
+	return append(append(append(append([]byte{POSITION}, id...), x...), y...), direction...), nil
 }
 
 func encodeSpeed(data Speed) ([]byte, error) {

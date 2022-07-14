@@ -67,7 +67,7 @@ func (c *Client) sendRoomData() {
 		c.conn.Write(packet)
 
 		// Position
-		packet, err = protocol.Encode(protocol.Move{
+		packet, err = protocol.Encode(protocol.Position{
 			Id: otherClient.id,
 			X: otherClient.x,
 			Y: otherClient.y,

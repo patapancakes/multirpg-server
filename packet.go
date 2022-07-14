@@ -22,8 +22,8 @@ func (p *Packet) recieve() {
 		err = p.handleSwitchRoom(packet)
 	case protocol.Sprite:
 		err = p.handleSprite(packet)
-	case protocol.Move:
-		err = p.handleMove(packet)
+	case protocol.Position:
+		err = p.handlePosition(packet)
 	case protocol.Speed:
 		err = p.handleSpeed(packet)
 	default:
@@ -67,21 +67,21 @@ func (p *Packet) handleSprite(sprite protocol.Sprite) error {
 	return nil
 }
 
-func (p *Packet) handleMove(move protocol.Move) error {
-	if move.Direction > 3 {
+func (p *Packet) handlePosition(position protocol.Position) error {
+	if position.Direction > 3 {
 		return fmt.Errorf("invalid direction")
 	}
 
-	move.Id = p.sender.id
+	position.Id = p.sender.id
 
-	packet, err := protocol.Encode(protocol.Move{})
+	packet, err := protocol.Encode(protocol.Position{})
 	if err != nil {
 		return err
 	}
 
-	p.sender.x = move.X
-	p.sender.y = move.Y
-	p.sender.direction = move.Direction
+	p.sender.x = position.X
+	p.sender.y = position.Y
+	p.sender.direction = position.Direction
 
 	p.sender.room.broadcast(packet, p.sender)
 
