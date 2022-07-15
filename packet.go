@@ -15,6 +15,7 @@ func (p *Packet) receive() {
 	packet, err := protocol.Decode(p.data)
 	if err != nil {
 		fmt.Println(err)
+		return
 	}
 
 	switch packet := packet.(type) {
