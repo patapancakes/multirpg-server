@@ -35,7 +35,7 @@ func (c *Client) listen() {
 			data: buf[:n],
 		}
 
-		go packet.receive()
+		go packet.process()
 	}
 }
 
