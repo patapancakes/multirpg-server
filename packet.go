@@ -65,7 +65,7 @@ func (p *Packet) handleSprite(sprite protocol.Sprite) error {
 	p.sender.spriteIndex = sprite.Index
 
 	sprite.Id = p.sender.id
-	packet, _ := protocol.Encode(protocol.Sprite{})
+	packet, _ := protocol.Encode(sprite)
 	p.sender.room.broadcast(packet, p.sender)
 
 	return nil
@@ -81,7 +81,7 @@ func (p *Packet) handlePosition(position protocol.Position) error {
 	p.sender.direction = position.Direction
 
 	position.Id = p.sender.id
-	packet, _ := protocol.Encode(protocol.Position{})
+	packet, _ := protocol.Encode(position)
 	p.sender.room.broadcast(packet, p.sender)
 
 	return nil
@@ -95,7 +95,7 @@ func (p *Packet) handleSpeed(speed protocol.Speed) error {
 	p.sender.speed = speed.Speed
 
 	speed.Id = p.sender.id
-	packet, _ := protocol.Encode(protocol.Speed{})
+	packet, _ := protocol.Encode(speed)
 	p.sender.room.broadcast(packet, p.sender)
 
 	return nil
