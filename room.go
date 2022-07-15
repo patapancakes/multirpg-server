@@ -36,7 +36,7 @@ func (s *Server) createRoom(id uint16) *Room {
 }
 
 func (r *Room) broadcast(data []byte, sender *Client) {
-	// Packet broadcasting is disabled while on the title screen
+	// Packet broadcasting is disabled while in the default room
 	if r.id == 0 {
 		return
 	}

@@ -99,7 +99,7 @@ func (c *Client) getRoomData() {
 }
 
 func (c *Client) joinRoom() {
-	// Redundant almost always, do not send room data or connect packets if on the title screen
+	// Redundant almost always, do not send room data or connect packets if in the default room
 	if c.room.id == 0 {
 		return
 	}
