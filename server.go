@@ -58,11 +58,12 @@ func (s *Server) handleConnection(conn net.Conn) {
 }
 
 func (s *Server) getFreeId() uint16 {
-	for i := uint16(1); i < 0xFFFF; i++ {
+	for i := uint16(0); i < 0xFFFF; i++ {
 		if _, ok := s.clientIds[i]; !ok {
 			return i
 		}
 	}
 
+	// This should never happen, if it does then somehow all ids are being used
 	return 0
 }
