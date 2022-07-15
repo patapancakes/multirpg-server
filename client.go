@@ -41,7 +41,7 @@ func (c *Client) listen() {
 
 func (c *Client) getRoomData() {
 	for otherClient := range c.room.clients {
-		if otherClient.id == c.id {
+		if otherClient == c {
 			continue
 		}
 
