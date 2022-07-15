@@ -61,9 +61,9 @@ func encodeSprite(data Sprite) ([]byte, error) {
 	return append(append(append(append([]byte{
 		SPRITE},
 		id...),
-		byte(len(data.Name))),
+		uint8(len(data.Name))),
 		data.Name...),
-		byte(data.Index),
+		data.Index,
 	), nil
 }
 
@@ -82,7 +82,7 @@ func encodePosition(data Position) ([]byte, error) {
 		id...),
 		x...),
 		y...),
-		byte(data.Direction),
+		data.Direction,
 	), nil
 }
 
@@ -93,6 +93,6 @@ func encodeSpeed(data Speed) ([]byte, error) {
 	return append(append([]byte{
 		SPEED},
 		id...),
-		byte(data.Speed),
+		data.Speed,
 	), nil
 }
