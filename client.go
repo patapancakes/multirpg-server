@@ -8,8 +8,9 @@ import (
 
 type Client struct {
 	conn net.Conn
-	room *Room
 	id uint16
+
+	room *Room
 
 	sprite []byte
 	spriteIndex uint8
