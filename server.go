@@ -49,7 +49,7 @@ func (s *Server) handleConnection(conn net.Conn) {
 	client.listen()
 
 	fmt.Println("Connection from " + conn.RemoteAddr().String() + " closed")
-	client.handleDisconnect()
+	client.leaveRoom()
 	delete(s.clientIds, client.id)
 }
 

@@ -39,7 +39,7 @@ func (p *Packet) handleSwitchRoom(switchRoom protocol.SwitchRoom) error {
 		return fmt.Errorf("room not found")
 	}
 
-	p.sender.handleDisconnect() // remove from old room and broadcast disconnect packet
+	p.sender.leaveRoom() // remove from old room and broadcast disconnect packet
 
 	// Initialize client variables so other clients entering the new room don't get the old values
 	// Redundant most of the time but prevents some visual weirdness
@@ -50,7 +50,7 @@ func (p *Packet) handleSwitchRoom(switchRoom protocol.SwitchRoom) error {
 
 	p.sender.room = p.sender.room.server.rooms[switchRoom.Id] // set client room to new room
 	p.sender.room.server.rooms[switchRoom.Id].clients[p.sender] = true // add to new room
-	p.sender.handleConnect() // get room data and broadcast connect packet
+	p.sender.joinRoom() // get room data and broadcast connect packet
 
 	return nil
 }

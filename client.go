@@ -92,7 +92,7 @@ func (c *Client) getRoomData() {
 	}
 }
 
-func (c *Client) handleConnect() {
+func (c *Client) joinRoom() {
 	c.getRoomData()
 
 	packet, err := protocol.Encode(protocol.Connect{Id: c.id})
@@ -103,7 +103,7 @@ func (c *Client) handleConnect() {
 	c.room.broadcast(packet, c)
 }
 
-func (c *Client) handleDisconnect() {
+func (c *Client) leaveRoom() {
 	delete(c.room.server.rooms[c.room.id].clients, c)
 
 	packet, err := protocol.Encode(protocol.Disconnect{Id: c.id})
