@@ -23,7 +23,7 @@ type Client struct {
 
 func (c *Client) listen() {
 	for	{
-		buf := make([]byte, 1024)
+		buf := make([]byte, 300)
 
 		n, err := c.conn.Read(buf)
 		if err != nil {
