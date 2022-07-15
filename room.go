@@ -3,6 +3,7 @@ package main
 type Room struct {
 	server *Server
 	id uint16
+
 	clients map[*Client]bool
 }
 
