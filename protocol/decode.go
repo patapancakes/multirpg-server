@@ -25,7 +25,9 @@ func decodeSwitchRoom(data []byte) (interface{}, error) {
 		return nil, fmt.Errorf("invalid packet length: %d", len(data))
 	}
 
-	return SwitchRoom{Id: binary.LittleEndian.Uint16(data[1:])}, nil
+	return SwitchRoom{
+		Id: binary.LittleEndian.Uint16(data[1:]),
+	}, nil
 }
 
 func decodeSprite(data []byte) (interface{}, error) {
@@ -38,7 +40,10 @@ func decodeSprite(data []byte) (interface{}, error) {
 		return nil, fmt.Errorf("invalid packet length: %d", len(data))
 	}
 
-	return Sprite{Name: data[2:2+nameLength], Index: uint8(data[2+nameLength:][0])}, nil
+	return Sprite{
+		Name: data[2:2+nameLength],
+		Index: uint8(data[2+nameLength:][0]),
+	}, nil
 }
 
 func decodePosition(data []byte) (interface{}, error) {
@@ -46,7 +51,11 @@ func decodePosition(data []byte) (interface{}, error) {
 		return nil, fmt.Errorf("invalid packet length: %d", len(data))
 	}
 
-	return Position{X: binary.LittleEndian.Uint16(data[1:3]), Y: binary.LittleEndian.Uint16(data[3:5]), Direction: uint8(data[5:][0])}, nil
+	return Position{
+		X: binary.LittleEndian.Uint16(data[1:3]),
+		Y: binary.LittleEndian.Uint16(data[3:5]),
+		Direction: uint8(data[5:][0]),
+	}, nil
 }
 
 func decodeSpeed(data []byte) (interface{}, error) {
@@ -54,5 +63,7 @@ func decodeSpeed(data []byte) (interface{}, error) {
 		return nil, fmt.Errorf("invalid packet length: %d", len(data))
 	}
 
-	return Speed{Speed: uint8(data[1:][0])}, nil
+	return Speed{
+		Speed: uint8(data[1:][0]),
+	}, nil
 }

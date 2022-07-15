@@ -46,7 +46,9 @@ func (c *Client) getRoomData() {
 		}
 
 		// Connect
-		packet, _ := protocol.Encode(protocol.Connect{Id: otherClient.id})
+		packet, _ := protocol.Encode(protocol.Connect{
+			Id: otherClient.id,
+		})
 		c.conn.Write(packet)
 
 		// Sprite
@@ -83,13 +85,17 @@ func (c *Client) joinRoom() {
 
 	c.getRoomData()
 
-	packet, _ := protocol.Encode(protocol.Connect{Id: c.id})
+	packet, _ := protocol.Encode(protocol.Connect{
+		Id: c.id,
+	})
 	c.room.broadcast(packet, c)
 }
 
 func (c *Client) leaveRoom() {
 	delete(c.room.server.rooms[c.room.id].clients, c)
 
-	packet, _ := protocol.Encode(protocol.Disconnect{Id: c.id})
+	packet, _ := protocol.Encode(protocol.Disconnect{
+		Id: c.id,
+	})
 	c.room.broadcast(packet, c)
 }

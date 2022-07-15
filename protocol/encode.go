@@ -28,28 +28,43 @@ func encodeConnect(data Connect) ([]byte, error) {
 	id := make([]byte, 2)
 	binary.LittleEndian.PutUint16(id, data.Id)
 
-	return append([]byte{CONNECT}, id...), nil
+	return append([]byte{
+		CONNECT},
+		id...
+	), nil
 }
 
 func encodeDisconnect(data Disconnect) ([]byte, error) {
 	id := make([]byte, 2)
 	binary.LittleEndian.PutUint16(id, data.Id)
 
-	return append([]byte{DISCONNECT}, id...), nil
+	return append([]byte{
+		DISCONNECT},
+		id...
+	), nil
 }
 
 func encodeSwitchRoom(data SwitchRoom) ([]byte, error) {
 	id := make([]byte, 2)
 	binary.LittleEndian.PutUint16(id, data.Id)
 
-	return append([]byte{SWITCH_ROOM}, id...), nil
+	return append([]byte{
+		SWITCH_ROOM},
+		id...
+	), nil
 }
 
 func encodeSprite(data Sprite) ([]byte, error) {
 	id := make([]byte, 2)
 	binary.LittleEndian.PutUint16(id, data.Id)
 
-	return append(append(append(append([]byte{SPRITE}, id...), byte(len(data.Name))), data.Name...), byte(data.Index)), nil
+	return append(append(append(append([]byte{
+		SPRITE},
+		id...),
+		byte(len(data.Name))),
+		data.Name...),
+		byte(data.Index),
+	), nil
 }
 
 func encodePosition(data Position) ([]byte, error) {
@@ -62,12 +77,22 @@ func encodePosition(data Position) ([]byte, error) {
 	y := make([]byte, 2)
 	binary.LittleEndian.PutUint16(y, data.Y)
 
-	return append(append(append(append([]byte{POSITION}, id...), x...), y...), byte(data.Direction)), nil
+	return append(append(append(append([]byte{
+		POSITION},
+		id...),
+		x...),
+		y...),
+		byte(data.Direction),
+	), nil
 }
 
 func encodeSpeed(data Speed) ([]byte, error) {
 	id := make([]byte, 2)
 	binary.LittleEndian.PutUint16(id, data.Id)
 
-	return append(append([]byte{SPEED}, id...), byte(data.Speed)), nil
+	return append(append([]byte{
+		SPEED},
+		id...),
+		byte(data.Speed),
+	), nil
 }
