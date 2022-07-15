@@ -46,7 +46,7 @@ func decodePosition(data []byte) (interface{}, error) {
 		return nil, fmt.Errorf("invalid packet length: %d", len(data))
 	}
 
-	return Position{X: binary.LittleEndian.Uint16(data[2:3]), Y: binary.LittleEndian.Uint16(data[3:5]), Direction: uint8(data[5:][0])}, nil
+	return Position{X: binary.LittleEndian.Uint16(data[1:3]), Y: binary.LittleEndian.Uint16(data[3:5]), Direction: uint8(data[5:][0])}, nil
 }
 
 func decodeSpeed(data []byte) (interface{}, error) {
