@@ -40,7 +40,7 @@ func (c *Client) listen() {
 	}
 }
 
-func (c *Client) sendRoomData() {
+func (c *Client) getRoomData() {
 	for _, otherClient := range c.room.clients {
 		if otherClient.id == c.id {
 			continue
@@ -93,7 +93,7 @@ func (c *Client) sendRoomData() {
 }
 
 func (c *Client) handleConnect() {
-	c.sendRoomData()
+	c.getRoomData()
 
 	packet, err := protocol.Encode(protocol.Connect{Id: c.id})
 	if err != nil {
