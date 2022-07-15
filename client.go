@@ -46,48 +46,34 @@ func (c *Client) getRoomData() {
 			continue
 		}
 
-		// Connect
-		packet, err := protocol.Encode(protocol.Connect{Id: otherClient.id})
-		if err != nil {
-			fmt.Println(err)
-		}
+		// Error checking has been disabled here since these Encode calls should never fail
 
+		// Connect
+		packet, _ := protocol.Encode(protocol.Connect{Id: otherClient.id})
 		c.conn.Write(packet)
 
 		// Sprite
-		packet, err = protocol.Encode(protocol.Sprite{
+		packet, _ = protocol.Encode(protocol.Sprite{
 			Id: otherClient.id,
 			Name: otherClient.sprite,
 			Index: otherClient.spriteIndex,
 		})
-		if err != nil {
-			fmt.Println(err)
-		}
-
 		c.conn.Write(packet)
 
 		// Position
-		packet, err = protocol.Encode(protocol.Position{
+		packet, _ = protocol.Encode(protocol.Position{
 			Id: otherClient.id,
 			X: otherClient.x,
 			Y: otherClient.y,
 			Direction: otherClient.direction,
 		})
-		if err != nil {
-			fmt.Println(err)
-		}
-
 		c.conn.Write(packet)
 
 		// Speed
-		packet, err = protocol.Encode(protocol.Speed{
+		packet, _ = protocol.Encode(protocol.Speed{
 			Id: otherClient.id,
 			Speed: otherClient.speed,
 		})
-		if err != nil {
-			fmt.Println(err)
-		}
-
 		c.conn.Write(packet)
 	}
 }
