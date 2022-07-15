@@ -49,8 +49,7 @@ func (p *Packet) handleSwitchRoom(switchRoom protocol.SwitchRoom) error {
 	p.sender.speed = 0
 
 	p.sender.room = p.sender.room.server.rooms[switchRoom.Id] // set client room to new room
-	p.sender.id = p.sender.room.getFreeId() // set client id to new room's free id
-	p.sender.room.server.rooms[switchRoom.Id].clients[p.sender.id] = p.sender // add to new room
+	p.sender.room.server.rooms[switchRoom.Id].clients[p.sender] = true // add to new room
 	p.sender.handleConnect() // get room data and broadcast connect packet
 
 	return nil

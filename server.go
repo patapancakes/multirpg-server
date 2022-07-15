@@ -7,6 +7,7 @@ import (
 
 type Server struct {
 	rooms map[uint16]*Room
+	clientIds map[uint16]bool
 }
 
 func (s *Server) start(host *string, port *int) error {
@@ -40,13 +41,24 @@ func (s *Server) handleConnection(conn net.Conn) {
 	client := &Client{
 		conn: conn,
 		room: s.rooms[0],
-		id: s.rooms[0].getFreeId(),
+		id: s.getFreeId(),
 	}
 
-	s.rooms[0].clients[client.id] = client
+	s.rooms[0].clients[client] = true
 
 	client.listen()
 
 	fmt.Println("Connection from " + conn.RemoteAddr().String() + " closed")
 	client.handleDisconnect()
+	delete(s.clientIds, client.id)
+}
+
+func (s *Server) getFreeId() uint16 {
+	for i := uint16(1); i < 0xFFFF; i++ {
+		if _, ok := s.clientIds[i]; !ok {
+			return i
+		}
+	}
+
+	return 0
 }

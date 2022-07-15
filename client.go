@@ -41,7 +41,7 @@ func (c *Client) listen() {
 }
 
 func (c *Client) getRoomData() {
-	for _, otherClient := range c.room.clients {
+	for otherClient := range c.room.clients {
 		if otherClient.id == c.id {
 			continue
 		}
@@ -104,7 +104,7 @@ func (c *Client) handleConnect() {
 }
 
 func (c *Client) handleDisconnect() {
-	delete(c.room.server.rooms[c.room.id].clients, c.id)
+	delete(c.room.server.rooms[c.room.id].clients, c)
 
 	packet, err := protocol.Encode(protocol.Disconnect{Id: c.id})
 	if err != nil {
