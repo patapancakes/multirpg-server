@@ -1,12 +1,12 @@
 package protocol
 
 const (
-	CONNECT = 0x01
-	DISCONNECT = 0x02
-	SWITCH_ROOM = 0x03
-	SPRITE = 0x10
-	POSITION = 0x11
-	SPEED = 0x12
+	CONNECT     uint8 = 0x01
+	DISCONNECT  uint8 = 0x02
+	SWITCH_ROOM uint8 = 0x03
+	SPRITE      uint8 = 0x10
+	POSITION    uint8 = 0x11
+	SPEED       uint8 = 0x12
 )
 
 //0x01
