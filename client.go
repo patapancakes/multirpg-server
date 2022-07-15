@@ -79,6 +79,11 @@ func (c *Client) getRoomData() {
 }
 
 func (c *Client) joinRoom() {
+	// Redundant almost always, do not send room data or connect packets if on the title screen
+	if c.room.id == 0 {
+		return
+	}
+
 	c.getRoomData()
 
 	packet, err := protocol.Encode(protocol.Connect{Id: c.id})

@@ -15,6 +15,11 @@ func (s *Server) createRoom(id uint16) *Room {
 }
 
 func (r *Room) broadcast(data []byte, sender *Client) {
+	// Packet broadcasting is disabled while on the title screen
+	if r.id == 0 {
+		return
+	}
+
 	for client := range r.clients {
 		if client == sender {
 			continue
