@@ -36,7 +36,7 @@ func decodeSprite(data []byte) (interface{}, error) {
 	}
 
 	nameLength := int(data[1:2][0])
-	if len(data[4:]) != nameLength + 1 {
+	if len(data[2:]) != nameLength + 1 {
 		return nil, fmt.Errorf("invalid packet length: %d", len(data))
 	}
 
