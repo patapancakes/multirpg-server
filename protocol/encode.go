@@ -49,13 +49,10 @@ func encodeSprite(data Sprite) ([]byte, error) {
 	id := make([]byte, 2)
 	binary.LittleEndian.PutUint16(id, data.Id)
 
-	name := make([]byte, len(data.Name))
-	copy(name, data.Name)
-
 	index := make([]byte, 1)
 	index[0] = byte(data.Index)
 
-	return append(append(append(append([]byte{SPRITE}, id...), byte(len(data.Name))), name...), index...), nil
+	return append(append(append(append([]byte{SPRITE}, id...), byte(len(data.Name))), data.Name...), index...), nil
 }
 
 func encodePosition(data Position) ([]byte, error) {
