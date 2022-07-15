@@ -15,8 +15,12 @@ func (s *Server) start(host *string, port *int) error {
 
 	s.rooms[0] = s.createRoom(0)
 
-	for _, mapID := range getMapList() {
-		s.rooms[mapID] = s.createRoom(mapID)
+	if maps, err := getMapList(); err != nil {
+		return err
+	} else {
+		for _, mapId := range maps {
+			s.rooms[mapId] = s.createRoom(mapId)
+		}
 	}
 
 	server, err := net.Listen("tcp", fmt.Sprintf("%s:%d", *host, *port))

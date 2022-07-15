@@ -6,10 +6,10 @@ import (
 	"strconv"
 )
 
-func getMapList() []uint16 {
+func getMapList() ([]uint16, error) {
 	files, err := os.ReadDir(".")
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	var maps []uint16
@@ -24,7 +24,7 @@ func getMapList() []uint16 {
 		}
 	}
 
-	return maps
+	return maps, nil
 }
 
 func getCharSetList() []string {
