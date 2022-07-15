@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net"
 
 	"github.com/Gamizard/multirpg-server/protocol"
@@ -46,8 +45,6 @@ func (c *Client) getRoomData() {
 			continue
 		}
 
-		// Error checking has been disabled here since these Encode calls should never fail
-
 		// Connect
 		packet, _ := protocol.Encode(protocol.Connect{Id: otherClient.id})
 		c.conn.Write(packet)
@@ -86,21 +83,13 @@ func (c *Client) joinRoom() {
 
 	c.getRoomData()
 
-	packet, err := protocol.Encode(protocol.Connect{Id: c.id})
-	if err != nil {
-		fmt.Println(err)
-	}
-
+	packet, _ := protocol.Encode(protocol.Connect{Id: c.id})
 	c.room.broadcast(packet, c)
 }
 
 func (c *Client) leaveRoom() {
 	delete(c.room.server.rooms[c.room.id].clients, c)
 
-	packet, err := protocol.Encode(protocol.Disconnect{Id: c.id})
-	if err != nil {
-		fmt.Println(err)
-	}
-
+	packet, _ := protocol.Encode(protocol.Disconnect{Id: c.id})
 	c.room.broadcast(packet, c)
 }
