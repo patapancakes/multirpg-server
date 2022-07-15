@@ -1,0 +1,16 @@
+----Server to Client Packets
+--Internal
+0x01 - Connect     - 0x01 | uint16 (id)
+0x02 - Disconnect  - 0x02 | uint16 (id)
+--Player
+0x10 - Sprite      - 0x10 | uint16 (id) | uint8 (length) | byte[] (sprite) | uint8 (index)
+0x11 - Position    - 0x11 | uint16 (id) | uint16 (x) | uint16 (y) | uint8 (direction)
+0x12 - Speed       - 0x12 | uint16 (id) | uint8 (speed)
+
+----Client to Server Packets
+--Internal
+0x03 - Switch Room - 0x03 | uint16 (room)
+--Player
+0x10 - Sprite      - 0x10 | uint8 (length) | byte[] (sprite) | uint8 (index)
+0x11 - Position    - 0x11 | uint16 (x) | uint16 (y) | uint8 (direction)
+0x12 - Speed       - 0x12 | uint8 (speed)
