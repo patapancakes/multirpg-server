@@ -40,6 +40,14 @@ func (p *Packet) handleSwitchRoom(switchRoom protocol.SwitchRoom) error {
 	}
 
 	p.sender.handleDisconnect() // remove from old room and broadcast disconnect packet
+
+	// Initialize client variables so other clients entering the new room don't get the old values
+	// Redundant most of the time but prevents some visual weirdness
+	p.sender.x = 0
+	p.sender.y = 0
+	p.sender.direction = 0
+	p.sender.speed = 0
+
 	p.sender.room = p.sender.room.server.rooms[switchRoom.Id] // set client room to new room
 	p.sender.id = p.sender.room.getFreeId() // set client id to new room's free id
 	p.sender.room.server.rooms[switchRoom.Id].clients[p.sender.id] = p.sender // add to new room

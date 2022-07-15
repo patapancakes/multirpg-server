@@ -106,12 +106,6 @@ func (c *Client) handleConnect() {
 func (c *Client) handleDisconnect() {
 	delete(c.room.server.rooms[c.room.id].clients, c.id)
 
-	// Initialize client
-	c.x = 0
-	c.y = 0
-	c.direction = 0
-	c.speed = 0
-
 	packet, err := protocol.Encode(protocol.Disconnect{Id: c.id})
 	if err != nil {
 		fmt.Println(err)
