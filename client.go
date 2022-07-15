@@ -28,22 +28,22 @@ import (
 
 type Client struct {
 	conn net.Conn
-	id uint16
+	id   uint16
 
 	room *Room
 
-	sprite []byte
+	sprite      []byte
 	spriteIndex uint8
 
-	x uint16
-	y uint16
+	x         uint16
+	y         uint16
 	direction uint8
 
 	speed uint8
 }
 
 func (c *Client) listen() {
-	for	{
+	for {
 		buf := make([]byte, 300)
 
 		n, err := c.conn.Read(buf)
@@ -53,7 +53,7 @@ func (c *Client) listen() {
 
 		packet := &Packet{
 			sender: c,
-			data: buf[:n],
+			data:   buf[:n],
 		}
 
 		go packet.process()
@@ -74,24 +74,24 @@ func (c *Client) getRoomData() {
 
 		// Sprite
 		packet, _ = protocol.Encode(protocol.Sprite{
-			Id: otherClient.id,
-			Name: otherClient.sprite,
+			Id:    otherClient.id,
+			Name:  otherClient.sprite,
 			Index: otherClient.spriteIndex,
 		})
 		c.conn.Write(packet)
 
 		// Position
 		packet, _ = protocol.Encode(protocol.Position{
-			Id: otherClient.id,
-			X: otherClient.x,
-			Y: otherClient.y,
+			Id:        otherClient.id,
+			X:         otherClient.x,
+			Y:         otherClient.y,
 			Direction: otherClient.direction,
 		})
 		c.conn.Write(packet)
 
 		// Speed
 		packet, _ = protocol.Encode(protocol.Speed{
-			Id: otherClient.id,
+			Id:    otherClient.id,
 			Speed: otherClient.speed,
 		})
 		c.conn.Write(packet)

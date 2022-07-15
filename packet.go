@@ -28,7 +28,7 @@ import (
 
 type Packet struct {
 	sender *Client
-	data []byte
+	data   []byte
 }
 
 func (p *Packet) process() {
@@ -69,9 +69,9 @@ func (p *Packet) handleSwitchRoom(switchRoom protocol.SwitchRoom) error {
 	p.sender.direction = 0
 	p.sender.speed = 0
 
-	p.sender.room = p.sender.room.server.rooms[switchRoom.Id] // set client room to new room
+	p.sender.room = p.sender.room.server.rooms[switchRoom.Id]          // set client room to new room
 	p.sender.room.server.rooms[switchRoom.Id].clients[p.sender] = true // add to new room
-	p.sender.joinRoom() // get room data and broadcast connect packet
+	p.sender.joinRoom()                                                // get room data and broadcast connect packet
 
 	return nil
 }

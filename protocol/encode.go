@@ -50,7 +50,7 @@ func encodeConnect(data Connect) ([]byte, error) {
 
 	return append([]byte{
 		CONNECT},
-		id...
+		id...,
 	), nil
 }
 
@@ -60,7 +60,7 @@ func encodeDisconnect(data Disconnect) ([]byte, error) {
 
 	return append([]byte{
 		DISCONNECT},
-		id...
+		id...,
 	), nil
 }
 
@@ -70,7 +70,7 @@ func encodeSwitchRoom(data SwitchRoom) ([]byte, error) {
 
 	return append([]byte{
 		SWITCH_ROOM},
-		id...
+		id...,
 	), nil
 }
 

@@ -22,15 +22,15 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 type Room struct {
 	server *Server
-	id uint16
+	id     uint16
 
 	clients map[*Client]bool
 }
 
 func (s *Server) createRoom(id uint16) *Room {
 	return &Room{
-		server: s,
-		id: id,
+		server:  s,
+		id:      id,
 		clients: make(map[*Client]bool),
 	}
 }

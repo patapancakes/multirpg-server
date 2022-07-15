@@ -46,21 +46,21 @@ type SwitchRoom struct {
 
 //0x10
 type Sprite struct {
-	Id uint16
-	Name []byte
+	Id    uint16
+	Name  []byte
 	Index uint8
 }
 
 //0x11
 type Position struct {
-	Id uint16
-	X uint16
-	Y uint16
+	Id        uint16
+	X         uint16
+	Y         uint16
 	Direction uint8
 }
 
 //0x12
 type Speed struct {
-	Id uint16
+	Id    uint16
 	Speed uint8
 }

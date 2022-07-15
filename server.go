@@ -26,7 +26,7 @@ import (
 )
 
 type Server struct {
-	rooms map[uint16]*Room
+	rooms     map[uint16]*Room
 	clientIds map[uint16]bool
 }
 
@@ -65,7 +65,7 @@ func (s *Server) handleConnection(conn net.Conn) {
 	client := &Client{
 		conn: conn,
 		room: s.rooms[0],
-		id: s.getFreeId(),
+		id:   s.getFreeId(),
 	}
 
 	s.rooms[0].clients[client] = true

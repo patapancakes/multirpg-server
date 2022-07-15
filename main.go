@@ -28,7 +28,7 @@ import (
 
 func main() {
 	server := &Server{
-		rooms: make(map[uint16]*Room),
+		rooms:     make(map[uint16]*Room),
 		clientIds: make(map[uint16]bool),
 	}
 

@@ -56,12 +56,12 @@ func decodeSprite(data []byte) (interface{}, error) {
 	}
 
 	nameLength := int(data[1:2][0])
-	if len(data[2:]) != nameLength + 1 {
+	if len(data[2:]) != nameLength+1 {
 		return nil, fmt.Errorf("invalid packet length: %d", len(data))
 	}
 
 	return Sprite{
-		Name: data[2:2+nameLength],
+		Name:  data[2 : 2+nameLength],
 		Index: uint8(data[2+nameLength:][0]),
 	}, nil
 }
@@ -72,8 +72,8 @@ func decodePosition(data []byte) (interface{}, error) {
 	}
 
 	return Position{
-		X: binary.LittleEndian.Uint16(data[1:3]),
-		Y: binary.LittleEndian.Uint16(data[3:5]),
+		X:         binary.LittleEndian.Uint16(data[1:3]),
+		Y:         binary.LittleEndian.Uint16(data[3:5]),
 		Direction: uint8(data[5:][0]),
 	}, nil
 }
