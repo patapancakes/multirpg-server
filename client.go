@@ -36,7 +36,7 @@ func (c *Client) listen() {
 			data: buf[:n],
 		}
 
-		go packet.recieve()
+		go packet.receive()
 	}
 }
 

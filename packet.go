@@ -11,7 +11,7 @@ type Packet struct {
 	data []byte
 }
 
-func (p *Packet) recieve() {
+func (p *Packet) receive() {
 	packet, err := protocol.Decode(p.data)
 	if err != nil {
 		fmt.Println(err)
