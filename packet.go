@@ -77,7 +77,7 @@ func (p *Packet) handleSwitchRoom(switchRoom protocol.SwitchRoom) error {
 }
 
 func (p *Packet) handleSprite(sprite protocol.Sprite) error {
-	if !isValidCharSet(string(sprite.Name)) {
+	if !p.sender.room.server.isValidCharSet(string(sprite.Name)) {
 		return fmt.Errorf("invalid charset")
 	}
 

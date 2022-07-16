@@ -89,8 +89,8 @@ func getSystemList() []string {
 	return systems
 }*/
 
-func isValidCharSet(charset string) bool {
-	for _, char := range getCharSetList() {
+func (s *Server) isValidCharSet(charset string) bool {
+	for _, char := range s.charSets {
 		if char == charset {
 			return true
 		}
