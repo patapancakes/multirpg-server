@@ -78,7 +78,8 @@ func (s *Server) handleConnection(conn net.Conn) {
 
 	fmt.Println("Connection from " + conn.RemoteAddr().String() + " closed")
 	client.leaveRoom()
-	delete(s.clientIds, client.id)
+
+	delete(s.clientIds, client.id) // release id
 }
 
 func (s *Server) getFreeId() uint16 {
