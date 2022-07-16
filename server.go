@@ -26,7 +26,7 @@ import (
 )
 
 type Server struct {
-	charSets  []string
+	charSets []string
 
 	rooms     map[uint16]*Room
 	clientIds map[uint16]bool
