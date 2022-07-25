@@ -42,6 +42,7 @@ type Client struct {
 	speed uint8
 }
 
+// Listen for incoming packets from the client
 func (c *Client) listen() {
 	for {
 		buf := make([]byte, 300)

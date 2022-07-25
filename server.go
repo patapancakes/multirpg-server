@@ -52,6 +52,7 @@ func (s *Server) start(host *string, port *int) error {
 		return err
 	}
 
+	// Listen for incoming connections
 	for {
 		conn, err := server.Accept()
 		if err != nil {
@@ -79,7 +80,8 @@ func (s *Server) handleConnection(conn net.Conn) {
 	fmt.Println("Connection from " + conn.RemoteAddr().String() + " closed")
 	client.leaveRoom()
 
-	delete(s.clientIds, client.id) // release id
+	// Release client id
+	delete(s.clientIds, client.id)
 }
 
 func (s *Server) getFreeId() uint16 {
