@@ -62,38 +62,38 @@ func (c *Client) listen() {
 }
 
 func (c *Client) getRoomData() {
-	for otherClient := range c.room.clients {
-		if otherClient == c {
+	for client := range c.room.clients {
+		if client == c {
 			continue
 		}
 
 		// Connect
 		packet, _ := protocol.Encode(protocol.Connect{
-			Id: otherClient.id,
+			Id: client.id,
 		})
 		c.conn.Write(packet)
 
 		// Sprite
 		packet, _ = protocol.Encode(protocol.Sprite{
-			Id:    otherClient.id,
-			Name:  otherClient.sprite,
-			Index: otherClient.spriteIndex,
+			Id:    client.id,
+			Name:  client.sprite,
+			Index: client.spriteIndex,
 		})
 		c.conn.Write(packet)
 
 		// Position
 		packet, _ = protocol.Encode(protocol.Position{
-			Id:        otherClient.id,
-			X:         otherClient.x,
-			Y:         otherClient.y,
-			Direction: otherClient.direction,
+			Id:        client.id,
+			X:         client.x,
+			Y:         client.y,
+			Direction: client.direction,
 		})
 		c.conn.Write(packet)
 
 		// Speed
 		packet, _ = protocol.Encode(protocol.Speed{
-			Id:    otherClient.id,
-			Speed: otherClient.speed,
+			Id:    client.id,
+			Speed: client.speed,
 		})
 		c.conn.Write(packet)
 	}
