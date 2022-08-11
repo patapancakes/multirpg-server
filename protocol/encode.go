@@ -48,43 +48,28 @@ func encodeConnect(data Connect) ([]byte, error) {
 	id := make([]byte, 2)
 	binary.LittleEndian.PutUint16(id, data.Id)
 
-	return append([]byte{
-		CONNECT},
-		id...,
-	), nil
+	return combine(CONNECT, id), nil
 }
 
 func encodeDisconnect(data Disconnect) ([]byte, error) {
 	id := make([]byte, 2)
 	binary.LittleEndian.PutUint16(id, data.Id)
 
-	return append([]byte{
-		DISCONNECT},
-		id...,
-	), nil
+	return combine(DISCONNECT, id), nil
 }
 
 func encodeSwitchRoom(data SwitchRoom) ([]byte, error) {
 	id := make([]byte, 2)
 	binary.LittleEndian.PutUint16(id, data.Id)
 
-	return append([]byte{
-		SWITCH_ROOM},
-		id...,
-	), nil
+	return combine(SWITCH_ROOM, id), nil
 }
 
 func encodeSprite(data Sprite) ([]byte, error) {
 	id := make([]byte, 2)
 	binary.LittleEndian.PutUint16(id, data.Id)
 
-	return append(append(append(append([]byte{
-		SPRITE},
-		id...),
-		uint8(len(data.Name))),
-		data.Name...),
-		data.Index,
-	), nil
+	return combine(SPRITE, id, uint8(len(data.Name)), data.Name, data.Index), nil
 }
 
 func encodePosition(data Position) ([]byte, error) {
@@ -97,22 +82,27 @@ func encodePosition(data Position) ([]byte, error) {
 	y := make([]byte, 2)
 	binary.LittleEndian.PutUint16(y, data.Y)
 
-	return append(append(append(append([]byte{
-		POSITION},
-		id...),
-		x...),
-		y...),
-		data.Direction,
-	), nil
+	return combine(POSITION, id, x, y, data.Direction), nil
 }
 
 func encodeSpeed(data Speed) ([]byte, error) {
 	id := make([]byte, 2)
 	binary.LittleEndian.PutUint16(id, data.Id)
 
-	return append(append([]byte{
-		SPEED},
-		id...),
-		data.Speed,
-	), nil
+	return combine(SPEED, id, data.Speed), nil
+}
+
+// combine combines serveral bytes or byte arrays into a single byte array
+func combine(segments ...any) []byte {
+	var buf []byte
+	for _, segment := range segments {
+		switch segment := segment.(type) {
+		case byte:
+			buf = append(buf, segment)
+		case []byte:
+			buf = append(buf, segment...)
+		}
+	}
+
+	return buf
 }
