@@ -28,72 +28,23 @@ import (
 func Encode(data interface{}) ([]byte, error) {
 	switch data := data.(type) {
 	case Connect:
-		return encodeConnect(data)
+		return form(CONNECT, data.Id), nil
 	case Disconnect:
-		return encodeDisconnect(data)
+		return form(DISCONNECT, data.Id), nil
 	case SwitchRoom:
-		return encodeSwitchRoom(data)
+		return form(SWITCH_ROOM, data.Id), nil
 	case Sprite:
-		return encodeSprite(data)
+		return form(SPRITE, data.Id, uint8(len(data.Name)), data.Name, data.Index), nil
 	case Position:
-		return encodePosition(data)
+		return form(POSITION, data.Id, data.X, data.Y, data.Direction), nil
 	case Speed:
-		return encodeSpeed(data)
+		return form(SPEED, data.Id, data.Speed), nil
 	default:
 		return nil, fmt.Errorf("unknown packet type: %T", data)
 	}
 }
 
-func encodeConnect(data Connect) ([]byte, error) {
-	id := make([]byte, 2)
-	binary.LittleEndian.PutUint16(id, data.Id)
-
-	return combine(CONNECT, id), nil
-}
-
-func encodeDisconnect(data Disconnect) ([]byte, error) {
-	id := make([]byte, 2)
-	binary.LittleEndian.PutUint16(id, data.Id)
-
-	return combine(DISCONNECT, id), nil
-}
-
-func encodeSwitchRoom(data SwitchRoom) ([]byte, error) {
-	id := make([]byte, 2)
-	binary.LittleEndian.PutUint16(id, data.Id)
-
-	return combine(SWITCH_ROOM, id), nil
-}
-
-func encodeSprite(data Sprite) ([]byte, error) {
-	id := make([]byte, 2)
-	binary.LittleEndian.PutUint16(id, data.Id)
-
-	return combine(SPRITE, id, uint8(len(data.Name)), data.Name, data.Index), nil
-}
-
-func encodePosition(data Position) ([]byte, error) {
-	id := make([]byte, 2)
-	binary.LittleEndian.PutUint16(id, data.Id)
-
-	x := make([]byte, 2)
-	binary.LittleEndian.PutUint16(x, data.X)
-
-	y := make([]byte, 2)
-	binary.LittleEndian.PutUint16(y, data.Y)
-
-	return combine(POSITION, id, x, y, data.Direction), nil
-}
-
-func encodeSpeed(data Speed) ([]byte, error) {
-	id := make([]byte, 2)
-	binary.LittleEndian.PutUint16(id, data.Id)
-
-	return combine(SPEED, id, data.Speed), nil
-}
-
-// combine combines serveral bytes or byte arrays into a single byte array
-func combine(segments ...any) []byte {
+func form(segments ...any) []byte {
 	var buf []byte
 	for _, segment := range segments {
 		switch segment := segment.(type) {
@@ -101,6 +52,11 @@ func combine(segments ...any) []byte {
 			buf = append(buf, segment)
 		case []byte:
 			buf = append(buf, segment...)
+		case uint16:
+			ibuf := make([]byte, 2)
+			binary.LittleEndian.PutUint16(ibuf, segment)
+
+			buf = append(buf, ibuf...)
 		}
 	}
 
