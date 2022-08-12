@@ -45,8 +45,6 @@ func (p *Packet) process() {
 		err = p.handleSprite(packet)
 	case protocol.Position:
 		err = p.handlePosition(packet)
-	case protocol.Speed:
-		err = p.handleSpeed(packet)
 	default:
 		err = fmt.Errorf("unknown packet type: %T", packet)
 	}
@@ -103,20 +101,6 @@ func (p *Packet) handlePosition(position protocol.Position) error {
 
 	position.Id = p.sender.id
 	packet, _ := protocol.Encode(position)
-	p.sender.room.broadcast(packet, p.sender)
-
-	return nil
-}
-
-func (p *Packet) handleSpeed(speed protocol.Speed) error {
-	if speed.Speed > 10 {
-		return fmt.Errorf("speed is too high")
-	}
-
-	p.sender.speed = speed.Speed
-
-	speed.Id = p.sender.id
-	packet, _ := protocol.Encode(speed)
 	p.sender.room.broadcast(packet, p.sender)
 
 	return nil

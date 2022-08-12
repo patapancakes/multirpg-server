@@ -89,13 +89,6 @@ func (c *Client) getRoomData() {
 			Direction: client.direction,
 		})
 		c.conn.Write(packet)
-
-		// Speed
-		packet, _ = protocol.Encode(protocol.Speed{
-			Id:    client.id,
-			Speed: client.speed,
-		})
-		c.conn.Write(packet)
 	}
 }
 
