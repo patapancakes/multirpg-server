@@ -25,7 +25,7 @@ import (
 	"fmt"
 )
 
-func Decode(data []byte) (interface{}, error) {
+func Decode(data []byte) (any, error) {
 	switch data[0] {
 	case SWITCH_ROOM:
 		return decodeSwitchRoom(data)
@@ -38,7 +38,7 @@ func Decode(data []byte) (interface{}, error) {
 	}
 }
 
-func decodeSwitchRoom(data []byte) (interface{}, error) {
+func decodeSwitchRoom(data []byte) (any, error) {
 	if len(data) != 3 {
 		return nil, fmt.Errorf("invalid switch room packet length: %d", len(data))
 	}
@@ -48,7 +48,7 @@ func decodeSwitchRoom(data []byte) (interface{}, error) {
 	}, nil
 }
 
-func decodeSprite(data []byte) (interface{}, error) {
+func decodeSprite(data []byte) (any, error) {
 	if len(data) < 3 {
 		return nil, fmt.Errorf("invalid sprite packet length: %d", len(data))
 	}
@@ -64,7 +64,7 @@ func decodeSprite(data []byte) (interface{}, error) {
 	}, nil
 }
 
-func decodePosition(data []byte) (interface{}, error) {
+func decodePosition(data []byte) (any, error) {
 	if len(data) != 6 {
 		return nil, fmt.Errorf("invalid position packet length: %d", len(data))
 	}

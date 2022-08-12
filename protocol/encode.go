@@ -25,7 +25,7 @@ import (
 	"fmt"
 )
 
-func Encode(data interface{}) ([]byte, error) {
+func Encode(data any) ([]byte, error) {
 	switch data := data.(type) {
 	case Connect:
 		return form(CONNECT, data.Id), nil
