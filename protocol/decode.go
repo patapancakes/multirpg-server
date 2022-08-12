@@ -26,6 +26,11 @@ import (
 )
 
 func Decode(data []byte) (any, error) {
+	// This is unneeded if conn.Read errors when the read buffer is empty
+	if len(data) < 1 {
+		return nil, fmt.Errorf("invalid packet length: %d", len(data))
+	}
+
 	switch data[0] {
 	case SWITCH_ROOM:
 		return decodeSwitchRoom(data)
