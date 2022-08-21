@@ -37,6 +37,8 @@ func Encode(data any) ([]byte, error) {
 		return form(SPRITE, data.Id, uint8(len(data.Name)), data.Name, data.Index), nil
 	case Position:
 		return form(POSITION, data.Id, data.X, data.Y, data.Direction), nil
+	case Speed:
+		return form(SPEED, data.Id, data.Speed), nil
 	default:
 		return nil, fmt.Errorf("unknown packet type: %T", data)
 	}

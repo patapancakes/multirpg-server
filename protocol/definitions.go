@@ -58,3 +58,9 @@ type Position struct {
 	Y         uint16
 	Direction uint8
 }
+
+//0x12
+type Speed struct {
+	Id    uint16
+	Speed uint8
+}

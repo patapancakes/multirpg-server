@@ -5,6 +5,7 @@
 --Player
 0x10 - Sprite      - 0x10 | uint16 (clientId) | uint8 (length) | byte[] (sprite) | uint8 (index)
 0x11 - Position    - 0x11 | uint16 (clientId) | uint16 (x) | uint16 (y) | uint8 (direction)
+0x12 - Speed       - 0x12 | uint16 (clientId) | uint8 (speed)
 
 ----Client to Server Packets
 --Internal

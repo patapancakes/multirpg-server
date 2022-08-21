@@ -38,6 +38,8 @@ func Decode(data []byte) (any, error) {
 		return decodeSprite(data)
 	case POSITION:
 		return decodePosition(data)
+	case SPEED:
+		return decodeSpeed(data)
 	default:
 		return nil, fmt.Errorf("unknown packet type: %d", data[0])
 	}
@@ -78,5 +80,15 @@ func decodePosition(data []byte) (any, error) {
 		X:         binary.LittleEndian.Uint16(data[1:3]),
 		Y:         binary.LittleEndian.Uint16(data[3:5]),
 		Direction: uint8(data[5:][0]),
+	}, nil
+}
+
+func decodeSpeed(data []byte) (interface{}, error) {
+	if len(data) != 2 {
+		return nil, fmt.Errorf("invalid packet length: %d", len(data))
+	}
+
+	return Speed{
+		Speed: uint8(data[1:][0]),
 	}, nil
 }
