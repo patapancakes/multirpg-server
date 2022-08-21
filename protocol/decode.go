@@ -83,7 +83,7 @@ func decodePosition(data []byte) (any, error) {
 	}, nil
 }
 
-func decodeSpeed(data []byte) (interface{}, error) {
+func decodeSpeed(data []byte) (any, error) {
 	if len(data) != 2 {
 		return nil, fmt.Errorf("invalid packet length: %d", len(data))
 	}
