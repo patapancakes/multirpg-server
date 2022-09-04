@@ -28,24 +28,24 @@ import (
 func Encode(data any) ([]byte, error) {
 	switch data := data.(type) {
 	case Connect:
-		return form(CONNECT, data.Id), nil
+		return packSegments(2, CONNECT, data.Id), nil
 	case Disconnect:
-		return form(DISCONNECT, data.Id), nil
+		return packSegments(2, DISCONNECT, data.Id), nil
 	case SwitchRoom:
-		return form(SWITCH_ROOM, data.Id), nil
+		return packSegments(2, SWITCH_ROOM, data.Id), nil
 	case Sprite:
-		return form(SPRITE, data.Id, uint8(len(data.Name)), data.Name, data.Index), nil
+		return packSegments(0, SPRITE, data.Id, uint8(len(data.Name)), data.Name, data.Index), nil
 	case Position:
-		return form(POSITION, data.Id, data.X, data.Y, data.Direction), nil
+		return packSegments(5, POSITION, data.Id, data.X, data.Y, data.Direction), nil
 	case Speed:
-		return form(SPEED, data.Id, data.Speed), nil
+		return packSegments(3, SPEED, data.Id, data.Speed), nil
 	default:
 		return nil, fmt.Errorf("unknown packet type: %T", data)
 	}
 }
 
-func form(segments ...any) []byte {
-	var buf []byte
+func packSegments(length int, segments ...any) []byte {
+	buf := make([]byte, length)
 	for _, segment := range segments {
 		switch segment := segment.(type) {
 		case byte:
