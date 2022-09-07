@@ -51,6 +51,10 @@ func (c *Client) listen() {
 			return
 		}
 
+		if n < 1 {
+			continue
+		}
+
 		packet := &Packet{
 			sender: c,
 			data:   buf[:n],
