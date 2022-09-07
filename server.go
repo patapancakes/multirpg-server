@@ -65,8 +65,6 @@ func (s *Server) start(host *string, port *int) error {
 }
 
 func (s *Server) handleConnection(conn net.Conn) {
-	defer conn.Close()
-
 	client := &Client{
 		conn: conn,
 		id:   s.getFreeId(),
@@ -78,11 +76,17 @@ func (s *Server) handleConnection(conn net.Conn) {
 
 	client.listen()
 
-	fmt.Println("Connection from " + conn.RemoteAddr().String() + " closed")
 	client.leaveRoom()
 
 	// Release client id
 	delete(s.clientIds, client.id)
+
+	if err := conn.Close(); err != nil {
+		fmt.Printf("failed to close connection for client %d: %s\n", client.id, err)
+		return
+	}
+
+	fmt.Println("Connection from " + conn.RemoteAddr().String() + " closed")
 }
 
 func (s *Server) getFreeId() uint16 {
