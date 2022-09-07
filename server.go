@@ -59,7 +59,6 @@ func (s *Server) start(host *string, port *int) error {
 			return err
 		}
 
-		fmt.Println("Connection from " + conn.RemoteAddr().String())
 		go s.handleConnection(conn)
 	}
 }
@@ -74,6 +73,8 @@ func (s *Server) handleConnection(conn net.Conn) {
 	s.clientIds[client.id] = true
 	s.rooms[0].clients[client] = true
 
+	fmt.Printf("Connection from %s (client %d)\n", conn.RemoteAddr().String(), client.id)
+
 	client.listen()
 
 	client.leaveRoom()
@@ -82,11 +83,11 @@ func (s *Server) handleConnection(conn net.Conn) {
 	delete(s.clientIds, client.id)
 
 	if err := conn.Close(); err != nil {
-		fmt.Printf("failed to close connection for client %d: %s\n", client.id, err)
+		fmt.Printf("Connection from %s (client %d) failed to close: %s\n", conn.RemoteAddr().String(), client.id, err)
 		return
 	}
 
-	fmt.Println("Connection from " + conn.RemoteAddr().String() + " closed")
+	fmt.Printf("Connection from %s (client %d) closed\n", conn.RemoteAddr().String(), client.id)
 }
 
 func (s *Server) getFreeId() uint16 {
