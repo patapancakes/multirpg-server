@@ -69,12 +69,12 @@ func (s *Server) handleConnection(conn net.Conn) {
 
 	client := &Client{
 		conn: conn,
-		room: s.rooms[0],
 		id:   s.getFreeId(),
+		room: s.rooms[0],
 	}
 
-	s.rooms[0].clients[client] = true
 	s.clientIds[client.id] = true
+	s.rooms[0].clients[client] = true
 
 	client.listen()
 
