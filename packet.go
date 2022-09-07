@@ -34,7 +34,7 @@ type Packet struct {
 func (p *Packet) process() {
 	packet, err := protocol.Decode(p.data)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Printf("client %d packet error: %s\n", p.sender.id, err)
 		return
 	}
 

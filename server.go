@@ -33,7 +33,7 @@ type Server struct {
 }
 
 func (s *Server) start(host *string, port *int) error {
-	fmt.Println("Starting server on " + *host + ":" + fmt.Sprint(*port))
+	fmt.Printf("Starting server on %s:%d\n", *host, *port)
 
 	// Room 0 is the room clients are put in when they first connect
 	// Clients are expected to send a switch room packet to join a game room
