@@ -52,7 +52,7 @@ func (p *Packet) process() {
 		err = fmt.Errorf("unknown packet type: %T", packet)
 	}
 	if err != nil {
-		fmt.Println(err)
+		fmt.Printf("client %d packet error: %s\n", p.sender.id, err)
 	}
 }
 
