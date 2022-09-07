@@ -40,9 +40,9 @@ func Decode(data []byte) (any, error) {
 	}
 }
 
-func decodeSwitchRoom(data []byte) (any, error) {
+func decodeSwitchRoom(data []byte) (SwitchRoom, error) {
 	if len(data) != 3 {
-		return nil, fmt.Errorf("invalid switch room packet length: %d", len(data))
+		return SwitchRoom{}, fmt.Errorf("invalid switch room packet length: %d", len(data))
 	}
 
 	return SwitchRoom{
@@ -50,14 +50,14 @@ func decodeSwitchRoom(data []byte) (any, error) {
 	}, nil
 }
 
-func decodeSprite(data []byte) (any, error) {
+func decodeSprite(data []byte) (Sprite, error) {
 	if len(data) < 3 {
-		return nil, fmt.Errorf("invalid sprite packet length: %d", len(data))
+		return Sprite{}, fmt.Errorf("invalid sprite packet length: %d", len(data))
 	}
 
 	nameLength := int(data[1:2][0])
 	if len(data[2:]) != nameLength+1 {
-		return nil, fmt.Errorf("invalid sprite packet length: %d", len(data))
+		return Sprite{}, fmt.Errorf("invalid sprite packet length: %d", len(data))
 	}
 
 	return Sprite{
@@ -66,9 +66,9 @@ func decodeSprite(data []byte) (any, error) {
 	}, nil
 }
 
-func decodePosition(data []byte) (any, error) {
+func decodePosition(data []byte) (Position, error) {
 	if len(data) != 6 {
-		return nil, fmt.Errorf("invalid position packet length: %d", len(data))
+		return Position{}, fmt.Errorf("invalid position packet length: %d", len(data))
 	}
 
 	return Position{
@@ -78,9 +78,9 @@ func decodePosition(data []byte) (any, error) {
 	}, nil
 }
 
-func decodeSpeed(data []byte) (any, error) {
+func decodeSpeed(data []byte) (Speed, error) {
 	if len(data) != 2 {
-		return nil, fmt.Errorf("invalid packet length: %d", len(data))
+		return Speed{}, fmt.Errorf("invalid packet length: %d", len(data))
 	}
 
 	return Speed{
