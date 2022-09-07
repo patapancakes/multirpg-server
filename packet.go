@@ -21,7 +21,6 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
 import (
-	"errors"
 	"fmt"
 
 	"github.com/Gamizard/multirpg-server/protocol"
@@ -58,7 +57,7 @@ func (p *Packet) process() {
 
 func (p *Packet) handleSwitchRoom(switchRoom protocol.SwitchRoom) error {
 	if p.sender.room.server.rooms[switchRoom.Id] == nil {
-		return errors.New("room not found")
+		return fmt.Errorf("room not found: %d", switchRoom.Id)
 	}
 
 	// Remove client from old room and broadcast disconnect packet
@@ -80,7 +79,7 @@ func (p *Packet) handleSwitchRoom(switchRoom protocol.SwitchRoom) error {
 
 func (p *Packet) handleSprite(sprite protocol.Sprite) error {
 	if !p.sender.room.server.isValidCharSet(string(sprite.Name)) {
-		return errors.New("invalid charset")
+		return fmt.Errorf("invalid charset: %s", sprite.Name)
 	}
 
 	p.sender.sprite = sprite.Name
@@ -95,7 +94,7 @@ func (p *Packet) handleSprite(sprite protocol.Sprite) error {
 
 func (p *Packet) handlePosition(position protocol.Position) error {
 	if position.Direction > 3 {
-		return errors.New("invalid direction")
+		return fmt.Errorf("invalid direction: %d", position.Direction)
 	}
 
 	p.sender.x = position.X
@@ -111,7 +110,7 @@ func (p *Packet) handlePosition(position protocol.Position) error {
 
 func (p *Packet) handleSpeed(speed protocol.Speed) error {
 	if speed.Speed > 10 {
-		return errors.New("speed is too high")
+		return fmt.Errorf("speed is too high: %d", speed.Speed)
 	}
 
 	p.sender.speed = speed.Speed
