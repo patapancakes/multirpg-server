@@ -21,6 +21,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -37,11 +38,16 @@ func getMapList() ([]uint16, error) {
 		if len(file.Name()) == 11 && file.Name()[7:] == ".lmu" {
 			id, err := strconv.Atoi(file.Name()[3:7])
 			if err != nil {
-				panic(err)
+				fmt.Printf("Unable to get map id from filename (%s), skipping...", file.Name())
+				continue
 			}
 
 			maps = append(maps, uint16(id))
 		}
+	}
+
+	if len(maps) < 1 {
+		fmt.Print("No maps were found\nMultiplayer map changes will not work. Make sure you're running multirpg-server from the game data folder and have permission to read files\n")
 	}
 
 	return maps, nil
@@ -50,7 +56,7 @@ func getMapList() ([]uint16, error) {
 func getCharSetList() []string {
 	files, err := os.ReadDir("CharSet")
 	if err != nil {
-		panic(err)
+		fmt.Printf("%s\nMultiplayer sprite changes will not work. Make sure you're running multirpg-server from the game data folder and have permission to read files\n", err)
 	}
 
 	var charsets []string
@@ -64,7 +70,7 @@ func getCharSetList() []string {
 /*func getSoundList() []string {
 	files, err := os.ReadDir("Sound")
 	if err != nil {
-		panic(err)
+		fmt.Printf("%s\nMultiplayer sounds will not work. Make sure you're running multirpg-server from the game data folder and have permission to read files\n", err)
 	}
 
 	var sounds []string
@@ -78,7 +84,7 @@ func getCharSetList() []string {
 func getSystemList() []string {
 	files, err := os.ReadDir("System")
 	if err != nil {
-		panic(err)
+		fmt.Printf("%s\nMultiplayer system changes will not work. Make sure you're running multirpg-server from the game data folder and have permission to read files\n", err)
 	}
 
 	var systems []string
