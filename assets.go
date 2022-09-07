@@ -53,54 +53,48 @@ func getMapList() ([]uint16, error) {
 	return maps, nil
 }
 
-func getCharSetList() []string {
+func getCharSetList() map[string]bool {
 	files, err := os.ReadDir("CharSet")
 	if err != nil {
 		fmt.Printf("%s\nMultiplayer sprite changes will not work. Make sure you're running multirpg-server from the game data folder and have permission to read files\n", err)
 	}
 
-	var charsets []string
+	charSets := make(map[string]bool)
 	for _, file := range files {
-		charsets = append(charsets, file.Name()[:len(file.Name())-len(filepath.Ext(file.Name()))])
+		charSets[file.Name()[:len(file.Name())-len(filepath.Ext(file.Name()))]] = true
 	}
 
-	return charsets
+	return charSets
 }
 
-/*func getSoundList() []string {
+/*func getSoundList() map[string]bool {
 	files, err := os.ReadDir("Sound")
 	if err != nil {
 		fmt.Printf("%s\nMultiplayer sounds will not work. Make sure you're running multirpg-server from the game data folder and have permission to read files\n", err)
 	}
 
-	var sounds []string
+	sounds := make(map[string]bool)
 	for _, file := range files {
-		sounds = append(sounds, file.Name()[:len(file.Name())-len(filepath.Ext(file.Name()))])
+		sounds[file.Name()[:len(file.Name())-len(filepath.Ext(file.Name()))]] = true
 	}
 
 	return sounds
 }
 
-func getSystemList() []string {
+func getSystemList() map[string]bool {
 	files, err := os.ReadDir("System")
 	if err != nil {
 		fmt.Printf("%s\nMultiplayer system changes will not work. Make sure you're running multirpg-server from the game data folder and have permission to read files\n", err)
 	}
 
-	var systems []string
+	systems := make(map[string]bool)
 	for _, file := range files {
-		systems = append(systems, file.Name()[:len(file.Name())-len(filepath.Ext(file.Name()))])
+		systems[file.Name()[:len(file.Name())-len(filepath.Ext(file.Name()))]] = true
 	}
 
 	return systems
 }*/
 
-func (s *Server) isValidCharSet(charset string) bool {
-	for _, char := range s.charSets {
-		if char == charset {
-			return true
-		}
-	}
-
-	return false
+func (s *Server) isValidCharSet(charSet string) bool {
+	return s.charSets[charSet]
 }
