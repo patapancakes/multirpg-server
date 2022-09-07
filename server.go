@@ -74,6 +74,7 @@ func (s *Server) handleConnection(conn net.Conn) {
 	}
 
 	s.rooms[0].clients[client] = true
+	s.clientIds[client.id] = true
 
 	client.listen()
 
