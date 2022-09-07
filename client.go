@@ -38,8 +38,7 @@ type Client struct {
 	x         uint16
 	y         uint16
 	direction uint8
-
-	speed uint8
+	speed     uint8
 }
 
 // Listen for incoming packets from the client
