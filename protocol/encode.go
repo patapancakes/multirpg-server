@@ -25,22 +25,22 @@ import (
 	"fmt"
 )
 
-func Encode(data any) ([]byte, error) {
-	switch data := data.(type) {
+func Encode(packet any) ([]byte, error) {
+	switch packet := packet.(type) {
 	case Connect:
-		return packSegments(2, CONNECT, data.Id), nil
+		return packSegments(2, CONNECT, packet.Id), nil
 	case Disconnect:
-		return packSegments(2, DISCONNECT, data.Id), nil
+		return packSegments(2, DISCONNECT, packet.Id), nil
 	case SwitchRoom:
-		return packSegments(2, SWITCH_ROOM, data.Id), nil
+		return packSegments(2, SWITCH_ROOM, packet.Id), nil
 	case Sprite:
-		return packSegments(0, SPRITE, data.Id, uint8(len(data.Name)), data.Name, data.Index), nil
+		return packSegments(0, SPRITE, packet.Id, uint8(len(packet.Name)), packet.Name, packet.Index), nil
 	case Position:
-		return packSegments(5, POSITION, data.Id, data.X, data.Y, data.Direction), nil
+		return packSegments(5, POSITION, packet.Id, packet.X, packet.Y, packet.Direction), nil
 	case Speed:
-		return packSegments(3, SPEED, data.Id, data.Speed), nil
+		return packSegments(3, SPEED, packet.Id, packet.Speed), nil
 	default:
-		return nil, fmt.Errorf("unknown packet type: %T", data)
+		return nil, fmt.Errorf("unknown packet type: %T", packet)
 	}
 }
 
