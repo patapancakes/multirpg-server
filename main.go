@@ -35,7 +35,7 @@ func main() {
 	}
 
 	if err := server.start(readFlags()); err != nil {
-		fmt.Printf("server error: %d\n", err)
+		fmt.Printf("server error: %s\n", err)
 		os.Exit(1)
 	}
 }
