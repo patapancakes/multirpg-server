@@ -47,14 +47,14 @@ func (s *Server) start(host *string, port *int) error {
 		}
 	}
 
-	server, err := net.Listen("tcp", fmt.Sprintf("%s:%d", *host, *port))
+	listener, err := net.Listen("tcp", fmt.Sprintf("%s:%d", *host, *port))
 	if err != nil {
 		return err
 	}
 
 	// Listen for incoming connections
 	for {
-		conn, err := server.Accept()
+		conn, err := listener.Accept()
 		if err != nil {
 			return err
 		}
