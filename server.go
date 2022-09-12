@@ -55,8 +55,9 @@ func (s *Server) start(host *string, port *int) error {
 
 func (s *Server) handleConnection(conn net.Conn) {
 	client := &Client{
-		conn: conn,
-		id:   s.getFreeId(),
+		conn:   conn,
+		server: s,
+		id:     s.getFreeId(),
 	}
 
 	s.clientIds[client.id] = true
