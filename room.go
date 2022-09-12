@@ -49,3 +49,11 @@ func (r *Room) broadcast(data []byte, sender *Client) {
 		client.conn.Write(data)
 	}
 }
+
+func (r *Room) removeIfEmpty() {
+	if len(r.clients) > 0  {
+		return
+	}
+
+	r.server.rooms[r.id] = nil
+}

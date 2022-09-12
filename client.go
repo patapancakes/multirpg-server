@@ -128,6 +128,10 @@ func (c *Client) leaveRoom() {
 		Id: c.id,
 	})
 	c.room.broadcast(packet, c)
+
+	c.room.removeIfEmpty()
+
+	c.room = nil
 }
 
 func (c *Client) disconnect() {
