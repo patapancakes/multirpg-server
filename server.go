@@ -26,8 +26,6 @@ import (
 )
 
 type Server struct {
-	charSets map[string]bool
-
 	rooms     map[uint16]*Room
 	clientIds map[uint16]bool
 }
@@ -38,14 +36,6 @@ func (s *Server) start(host *string, port *int) error {
 	// Room 0 is the room clients are put in when they first connect
 	// Clients are expected to send a switch room packet to join a game room
 	s.rooms[0] = s.createRoom(0)
-
-	if maps, err := getMapList(); err != nil {
-		return err
-	} else {
-		for _, mapId := range maps {
-			s.rooms[mapId] = s.createRoom(mapId)
-		}
-	}
 
 	listener, err := net.Listen("tcp", fmt.Sprintf("%s:%d", *host, *port))
 	if err != nil {

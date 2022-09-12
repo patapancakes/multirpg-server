@@ -57,7 +57,7 @@ func (p *Packet) process() {
 
 func (p *Packet) handleSwitchRoom(switchRoom protocol.SwitchRoom) error {
 	if p.sender.room.server.rooms[switchRoom.Id] == nil {
-		return fmt.Errorf("room not found: %d", switchRoom.Id)
+		p.sender.room.server.createRoom(switchRoom.Id)
 	}
 
 	// Remove client from old room and broadcast disconnect packet
@@ -76,10 +76,6 @@ func (p *Packet) handleSwitchRoom(switchRoom protocol.SwitchRoom) error {
 }
 
 func (p *Packet) handleSprite(sprite protocol.Sprite) error {
-	if !p.sender.room.server.isValidCharSet(string(sprite.Name)) {
-		return fmt.Errorf("invalid charset: %s", sprite.Name)
-	}
-
 	p.sender.sprite = sprite.Name
 	p.sender.spriteIndex = sprite.Index
 
