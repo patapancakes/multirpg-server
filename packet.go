@@ -57,7 +57,7 @@ func (p *Packet) process() {
 
 func (p *Packet) handleSwitchRoom(switchRoom protocol.SwitchRoom) error {
 	if p.sender.room.server.rooms[switchRoom.Id] == nil {
-		p.sender.room.server.createRoom(switchRoom.Id)
+		p.sender.room.server.rooms[switchRoom.Id] = p.sender.room.server.createRoom(switchRoom.Id)
 	}
 
 	// Remove client from old room and broadcast disconnect packet
