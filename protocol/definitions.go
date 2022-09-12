@@ -29,29 +29,29 @@ const (
 	SPEED       uint8 = 0x12
 )
 
-//0x01
+// 0x01
 type Connect struct {
 	Id uint16
 }
 
-//0x02
+// 0x02
 type Disconnect struct {
 	Id uint16
 }
 
-//0x03
+// 0x03
 type SwitchRoom struct {
 	Id uint16
 }
 
-//0x10
+// 0x10
 type Sprite struct {
 	Id    uint16
 	Name  []byte
 	Index uint8
 }
 
-//0x11
+// 0x11
 type Position struct {
 	Id        uint16
 	X         uint16
@@ -59,7 +59,7 @@ type Position struct {
 	Direction uint8
 }
 
-//0x12
+// 0x12
 type Speed struct {
 	Id    uint16
 	Speed uint8

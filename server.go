@@ -60,9 +60,9 @@ func (s *Server) handleConnection(conn net.Conn) {
 	}
 
 	s.clientIds[client.id] = true
-	
+
 	fmt.Printf("Connection from %s (client %d)\n", conn.RemoteAddr().String(), client.id)
-	
+
 	client.joinRoom(0)
 
 	client.listen()
