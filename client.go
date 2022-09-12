@@ -103,9 +103,12 @@ func (c *Client) getRoomData() {
 	}
 }
 
-func (c *Client) joinRoom() {
-	// Redundant almost always, do not send room data or connect packets if in the default room
-	if c.room.id == 0 {
+func (c *Client) joinRoom(roomId uint16) {
+	c.room = c.room.server.rooms[roomId]          // set client room to new room
+	c.room.server.rooms[roomId].clients[c] = true // add to new room's client list
+
+	// Do not send room data or connect packets if in the default room
+	if roomId == 0 {
 		return
 	}
 

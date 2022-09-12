@@ -67,13 +67,13 @@ func (s *Server) handleConnection(conn net.Conn) {
 	client := &Client{
 		conn: conn,
 		id:   s.getFreeId(),
-		room: s.rooms[0],
 	}
 
 	s.clientIds[client.id] = true
-	s.rooms[0].clients[client] = true
-
+	
 	fmt.Printf("Connection from %s (client %d)\n", conn.RemoteAddr().String(), client.id)
+	
+	client.joinRoom(0)
 
 	client.listen()
 
