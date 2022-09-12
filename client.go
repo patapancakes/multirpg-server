@@ -21,6 +21,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
 import (
+	"fmt"
 	"net"
 
 	"github.com/Gamizard/multirpg-server/protocol"
@@ -123,4 +124,18 @@ func (c *Client) leaveRoom() {
 		Id: c.id,
 	})
 	c.room.broadcast(packet, c)
+}
+
+func (c *Client) disconnect() {
+	c.leaveRoom()
+
+	// Release client id
+	delete(c.room.server.clientIds, c.id)
+
+	if err := c.conn.Close(); err != nil {
+		fmt.Printf("Connection from %s (client %d) failed to close: %s\n", c.conn.RemoteAddr().String(), c.id, err)
+		return
+	}
+
+	fmt.Printf("Connection from %s (client %d) closed\n", c.conn.RemoteAddr().String(), c.id)
 }

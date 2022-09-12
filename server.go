@@ -77,17 +77,7 @@ func (s *Server) handleConnection(conn net.Conn) {
 
 	client.listen()
 
-	client.leaveRoom()
-
-	// Release client id
-	delete(s.clientIds, client.id)
-
-	if err := conn.Close(); err != nil {
-		fmt.Printf("Connection from %s (client %d) failed to close: %s\n", conn.RemoteAddr().String(), client.id, err)
-		return
-	}
-
-	fmt.Printf("Connection from %s (client %d) closed\n", conn.RemoteAddr().String(), client.id)
+	client.disconnect()
 }
 
 func (s *Server) getFreeId() uint16 {
