@@ -67,6 +67,17 @@ func (c *Client) listen() {
 	}
 }
 
+func (c *Client) joinLobby(lobbyCode []byte) {
+	c.lobby = c.server.lobbies[string(lobbyCode)]
+
+	c.id = c.lobby.getFreeId()
+	c.lobby.clientIds[c.id] = true
+}
+
+func (c *Client) leaveLobby() {
+	delete(c.lobby.clientIds, c.id)
+}
+
 func (c *Client) getRoomData() {
 	for client := range c.room.clients {
 		if client == c {
@@ -103,17 +114,6 @@ func (c *Client) getRoomData() {
 		})
 		c.conn.Write(packet)
 	}
-}
-
-func (c *Client) joinLobby(lobbyCode []byte) {
-	c.lobby = c.server.lobbies[string(lobbyCode)]
-
-	c.id = c.lobby.getFreeId()
-	c.lobby.clientIds[c.id] = true
-}
-
-func (c *Client) leaveLobby() {
-	delete(c.lobby.clientIds, c.id)
 }
 
 func (c *Client) joinRoom(roomId uint16) {
