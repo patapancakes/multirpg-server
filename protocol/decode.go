@@ -27,17 +27,45 @@ import (
 
 func Decode(data []byte) (any, error) {
 	switch data[0] {
+	case NEW_LOBBY:
+		return decodeNewLobby(data)
+	case JOIN_LOBBY:
+		return decodeJoinLobby(data)
+
 	case SWITCH_ROOM:
 		return decodeSwitchRoom(data)
+
 	case SPRITE:
 		return decodeSprite(data)
 	case POSITION:
 		return decodePosition(data)
 	case SPEED:
 		return decodeSpeed(data)
+
 	default:
 		return nil, fmt.Errorf("unknown packet type: %d", data[0])
 	}
+}
+
+func decodeNewLobby(data []byte) (NewLobby, error) {
+	if len(data) != 33 {
+		return NewLobby{}, fmt.Errorf("invalid new lobby packet length: %d", len(data))
+	}
+
+	return NewLobby{
+		GameHash: data[1:],
+	}, nil
+}
+
+func decodeJoinLobby(data []byte) (JoinLobby, error) {
+	if len(data) != 39 {
+		return JoinLobby{}, fmt.Errorf("invalid join lobby packet length: %d", len(data))
+	}
+
+	return JoinLobby{
+		GameHash:  data[1:],
+		LobbyCode: data[33:],
+	}, nil
 }
 
 func decodeSwitchRoom(data []byte) (SwitchRoom, error) {

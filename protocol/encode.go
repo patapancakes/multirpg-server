@@ -27,18 +27,23 @@ import (
 
 func Encode(packet any) ([]byte, error) {
 	switch packet := packet.(type) {
+	case NewLobbyS:
+		return packSegments(7, NEW_LOBBY_S, packet.LobbyCode), nil
+
 	case Connect:
 		return packSegments(2, CONNECT, packet.Id), nil
 	case Disconnect:
 		return packSegments(2, DISCONNECT, packet.Id), nil
 	case SwitchRoom:
 		return packSegments(2, SWITCH_ROOM, packet.Id), nil
+
 	case Sprite:
 		return packSegments(0, SPRITE, packet.Id, uint8(len(packet.Name)), packet.Name, packet.Index), nil
 	case Position:
 		return packSegments(5, POSITION, packet.Id, packet.X, packet.Y, packet.Direction), nil
 	case Speed:
 		return packSegments(3, SPEED, packet.Id, packet.Speed), nil
+
 	default:
 		return nil, fmt.Errorf("unknown packet type: %T", packet)
 	}

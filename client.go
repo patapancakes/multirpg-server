@@ -32,6 +32,7 @@ type Client struct {
 	id   uint16
 
 	server *Server
+	lobby  *Lobby
 	room   *Room
 
 	sprite      []byte
@@ -104,9 +105,16 @@ func (c *Client) getRoomData() {
 	}
 }
 
+func (c *Client) joinLobby(lobbyCode []byte) {
+	c.lobby = c.server.lobbies[string(lobbyCode)]
+
+	c.id = c.lobby.getFreeId()
+	c.lobby.clientIds[c.id] = true
+}
+
 func (c *Client) joinRoom(roomId uint16) {
-	c.room = c.server.rooms[roomId]          // set client room to new room
-	c.server.rooms[roomId].clients[c] = true // add to new room's client list
+	c.room = c.lobby.rooms[roomId]          // set client room to new room
+	c.lobby.rooms[roomId].clients[c] = true // add to new room's client list
 
 	// Do not send room data or connect packets if in the default room
 	if roomId == 0 {
@@ -122,7 +130,7 @@ func (c *Client) joinRoom(roomId uint16) {
 }
 
 func (c *Client) leaveRoom() {
-	delete(c.server.rooms[c.room.id].clients, c)
+	delete(c.lobby.rooms[c.room.id].clients, c)
 
 	packet, _ := protocol.Encode(protocol.Disconnect{
 		Id: c.id,
@@ -138,7 +146,7 @@ func (c *Client) disconnect() {
 	c.leaveRoom()
 
 	// Release client id
-	delete(c.server.clientIds, c.id)
+	delete(c.lobby.clientIds, c.id)
 
 	if err := c.conn.Close(); err != nil {
 		fmt.Printf("Connection from %s (client %d) failed to close: %s\n", c.conn.RemoteAddr().String(), c.id, err)

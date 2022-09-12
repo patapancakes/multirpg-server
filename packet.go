@@ -38,26 +38,73 @@ func (p *Packet) process() {
 		return
 	}
 
-	switch packet := packet.(type) {
-	case protocol.SwitchRoom:
-		err = p.handleSwitchRoom(packet)
-	case protocol.Sprite:
-		err = p.handleSprite(packet)
-	case protocol.Position:
-		err = p.handlePosition(packet)
-	case protocol.Speed:
-		err = p.handleSpeed(packet)
-	default:
-		err = fmt.Errorf("unknown packet type: %T", packet)
+	if p.sender.lobby == nil {
+		switch packet := packet.(type) {
+		case protocol.NewLobby:
+			err = p.handleNewLobby(packet)
+		case protocol.JoinLobby:
+			err = p.handleJoinLobby(packet)
+
+		default:
+			err = fmt.Errorf("unknown packet type: %T", packet)
+		}
+	} else {
+		switch packet := packet.(type) {
+		case protocol.SwitchRoom:
+			err = p.handleSwitchRoom(packet)
+	
+		case protocol.Sprite:
+			err = p.handleSprite(packet)
+		case protocol.Position:
+			err = p.handlePosition(packet)
+		case protocol.Speed:
+			err = p.handleSpeed(packet)
+	
+		default:
+			err = fmt.Errorf("unknown packet type: %T", packet)
+		}
 	}
+
 	if err != nil {
 		fmt.Printf("client %d packet error: %s\n", p.sender.id, err)
 	}
 }
 
+func (p *Packet) handleNewLobby(newLobby protocol.NewLobby) error {
+	lobbyCode := generateLobbyCode()
+
+	p.sender.server.lobbies[string(lobbyCode)] = p.sender.server.createLobby(lobbyCode)
+
+	p.sender.joinLobby(lobbyCode)
+
+	packet, _ := protocol.Encode(protocol.NewLobbyS{
+		LobbyCode: lobbyCode,
+	})
+
+	p.sender.conn.Write(packet)
+
+	return nil
+}
+
+func (p *Packet) handleJoinLobby(joinLobby protocol.JoinLobby) error {
+	lobby := p.sender.server.lobbies[string(joinLobby.LobbyCode)]
+	if lobby == nil {
+		return fmt.Errorf("invalid lobby code: %s", joinLobby.LobbyCode)
+	}
+
+	if string(lobby.gameHash) != string(joinLobby.GameHash) {
+		return fmt.Errorf("hash mismatch: %s and %s", lobby.gameHash, joinLobby.GameHash)
+	}
+
+	p.sender.joinLobby(joinLobby.LobbyCode)
+
+	return nil
+}
+
+
 func (p *Packet) handleSwitchRoom(switchRoom protocol.SwitchRoom) error {
-	if p.sender.room.server.rooms[switchRoom.Id] == nil {
-		p.sender.room.server.rooms[switchRoom.Id] = p.sender.room.server.createRoom(switchRoom.Id)
+	if p.sender.room.lobby.rooms[switchRoom.Id] == nil {
+		p.sender.room.lobby.rooms[switchRoom.Id] = p.sender.room.lobby.createRoom(switchRoom.Id)
 	}
 
 	// Remove client from old room and broadcast disconnect packet

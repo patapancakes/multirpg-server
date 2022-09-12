@@ -21,15 +21,15 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
 type Room struct {
-	server *Server
-	id     uint16
+	lobby *Lobby
+	id    uint16
 
 	clients map[*Client]bool
 }
 
-func (s *Server) createRoom(id uint16) *Room {
+func (l *Lobby) createRoom(id uint16) *Room {
 	return &Room{
-		server:  s,
+		lobby:   l,
 		id:      id,
 		clients: make(map[*Client]bool),
 	}
@@ -51,9 +51,9 @@ func (r *Room) broadcast(data []byte, sender *Client) {
 }
 
 func (r *Room) removeIfEmpty() {
-	if len(r.clients) > 0  {
+	if len(r.clients) > 0 {
 		return
 	}
 
-	r.server.rooms[r.id] = nil
+	r.lobby.rooms[r.id] = nil
 }

@@ -1,16 +1,21 @@
 ----Server to Client Packets
---Internal
-0x01 - Connect     - 0x01 | uint16 (clientId)
-0x02 - Disconnect  - 0x02 | uint16 (clientId)
---Player
-0x10 - Sprite      - 0x10 | uint16 (clientId) | uint8 (length) | byte[] (sprite) | uint8 (index)
-0x11 - Position    - 0x11 | uint16 (clientId) | uint16 (x) | uint16 (y) | uint8 (direction)
-0x12 - Speed       - 0x12 | uint16 (clientId) | uint8 (speed)
+--Server
+0x01 - New Lobby   - 0x01 | [6]byte (lobbyCode)
+--Lobby
+0x10 - Connect     - 0x10 | uint16 (clientId)
+0x11 - Disconnect  - 0x11 | uint16 (clientId)
+--Room
+0x20 - Sprite      - 0x20 | uint16 (clientId) | uint8 (length) | byte[] (sprite) | uint8 (index)
+0x21 - Position    - 0x21 | uint16 (clientId) | uint16 (x) | uint16 (y) | uint8 (direction)
+0x22 - Speed       - 0x22 | uint16 (clientId) | uint8 (speed)
 
 ----Client to Server Packets
---Internal
-0x03 - Switch Room - 0x03 | uint16 (room)
---Player
-0x10 - Sprite      - 0x10 | uint8 (length) | byte[] (sprite) | uint8 (index)
-0x11 - Position    - 0x11 | uint16 (x) | uint16 (y) | uint8 (direction)
-0x12 - Speed       - 0x12 | uint8 (speed)
+--Server
+0x01 - New Lobby   - 0x01 | [32]byte (gameHash)
+0x02 - Join Lobby  - 0x02 | [32]byte (gameHash) | [6]byte (lobbyCode)
+--Lobby
+0x12 - Switch Room - 0x12 | uint16 (room)
+--Room
+0x20 - Sprite      - 0x20 | uint8 (length) | byte[] (sprite) | uint8 (index)
+0x21 - Position    - 0x21 | uint16 (x) | uint16 (y) | uint8 (direction)
+0x22 - Speed       - 0x22 | uint8 (speed)

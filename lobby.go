@@ -20,43 +20,35 @@ You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-import (
-	"fmt"
-	"net"
-)
+type Lobby struct {
+	gameHash []byte
 
-type Server struct {
-	lobbies map[string]*Lobby
+	rooms     map[uint16]*Room
+	clientIds map[uint16]bool
 }
 
-func (s *Server) start(host *string, port *int) error {
-	fmt.Printf("Starting server on %s:%d\n", *host, *port)
+func (s *Server) createLobby(gameHash []byte) *Lobby {
+	lobby := &Lobby{
+		gameHash:  gameHash,
 
-	listener, err := net.Listen("tcp", fmt.Sprintf("%s:%d", *host, *port))
-	if err != nil {
-		return err
+		rooms:     make(map[uint16]*Room),
+		clientIds: make(map[uint16]bool),
 	}
 
-	// Listen for incoming connections
-	for {
-		conn, err := listener.Accept()
-		if err != nil {
-			return err
+	// Room 0 is the room clients are put in when they first connect
+	// Clients are expected to send a switch room packet to join a game room
+	lobby.rooms[0] = lobby.createRoom(0)
+
+	return lobby
+}
+
+func (l *Lobby) getFreeId() uint16 {
+	for i := uint16(0); i < 0xFFFF; i++ {
+		if _, ok := l.clientIds[i]; !ok {
+			return i
 		}
-
-		go s.handleConnection(conn)
-	}
-}
-
-func (s *Server) handleConnection(conn net.Conn) {
-	client := &Client{
-		conn:   conn,
-		server: s,
 	}
 
-	fmt.Printf("Connection from %s\n", conn.RemoteAddr().String())
-
-	client.listen()
-
-	client.disconnect()
+	// This should never happen, if it does then somehow all ids are being used
+	return 0
 }

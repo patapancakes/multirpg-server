@@ -21,37 +21,58 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
 const (
-	CONNECT     uint8 = 0x01
-	DISCONNECT  uint8 = 0x02
-	SWITCH_ROOM uint8 = 0x03
-	SPRITE      uint8 = 0x10
-	POSITION    uint8 = 0x11
-	SPEED       uint8 = 0x12
+	NEW_LOBBY   uint8 = 0x01
+	NEW_LOBBY_S uint8 = 0x01
+	JOIN_LOBBY  uint8 = 0x02
+
+	CONNECT     uint8 = 0x10
+	DISCONNECT  uint8 = 0x11
+	SWITCH_ROOM uint8 = 0x12
+
+	SPRITE   uint8 = 0x20
+	POSITION uint8 = 0x21
+	SPEED    uint8 = 0x22
 )
 
-// 0x01
+// 0x01 C2S
+type NewLobby struct {
+	GameHash []byte
+}
+
+// 0x01 S2C
+type NewLobbyS struct {
+	LobbyCode []byte
+}
+
+// 0x02
+type JoinLobby struct {
+	GameHash  []byte
+	LobbyCode []byte
+}
+
+// 0x10
 type Connect struct {
 	Id uint16
 }
 
-// 0x02
+// 0x11
 type Disconnect struct {
 	Id uint16
 }
 
-// 0x03
+// 0x12
 type SwitchRoom struct {
 	Id uint16
 }
 
-// 0x10
+// 0x20
 type Sprite struct {
 	Id    uint16
 	Name  []byte
 	Index uint8
 }
 
-// 0x11
+// 0x21
 type Position struct {
 	Id        uint16
 	X         uint16
@@ -59,7 +80,7 @@ type Position struct {
 	Direction uint8
 }
 
-// 0x12
+// 0x22
 type Speed struct {
 	Id    uint16
 	Speed uint8

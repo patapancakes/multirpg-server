@@ -28,8 +28,7 @@ import (
 
 func main() {
 	server := &Server{
-		rooms:     make(map[uint16]*Room),
-		clientIds: make(map[uint16]bool),
+		lobbies: make(map[string]*Lobby),
 	}
 
 	if err := server.start(readFlags()); err != nil {
