@@ -38,7 +38,7 @@ func getMapList() ([]uint16, error) {
 		if len(file.Name()) == 11 && file.Name()[7:] == ".lmu" {
 			id, err := strconv.Atoi(file.Name()[3:7])
 			if err != nil {
-				fmt.Printf("Unable to get map id from filename (%s), skipping...", file.Name())
+				fmt.Printf("Unable to get map id from filename (%s), skipping...\n", file.Name())
 				continue
 			}
 
