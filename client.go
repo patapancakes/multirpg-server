@@ -112,6 +112,10 @@ func (c *Client) joinLobby(lobbyCode []byte) {
 	c.lobby.clientIds[c.id] = true
 }
 
+func (c *Client) leaveLobby() {
+	delete(c.lobby.clientIds, c.id)
+}
+
 func (c *Client) joinRoom(roomId uint16) {
 	c.room = c.lobby.rooms[roomId]          // set client room to new room
 	c.lobby.rooms[roomId].clients[c] = true // add to new room's client list
@@ -144,6 +148,7 @@ func (c *Client) leaveRoom() {
 
 func (c *Client) disconnect() {
 	c.leaveRoom()
+	c.leaveLobby()
 
 	// Release client id
 	delete(c.lobby.clientIds, c.id)
