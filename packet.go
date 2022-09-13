@@ -103,7 +103,7 @@ func (p *Packet) handleJoinLobby(joinLobby protocol.JoinLobby) error {
 	}
 
 	if string(lobby.gameHash) != string(joinLobby.GameHash) {
-		return fmt.Errorf("hash mismatch: %s and %s", lobby.gameHash, joinLobby.GameHash)
+		return fmt.Errorf("game hash mismatch: %s and %s", lobby.gameHash, joinLobby.GameHash)
 	}
 
 	p.sender.joinLobby(string(joinLobby.LobbyCode))
