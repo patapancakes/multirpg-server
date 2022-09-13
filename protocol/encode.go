@@ -33,8 +33,8 @@ func Encode(packet any) ([]byte, error) {
 	case SwitchRoom:
 		return packSegments(2, SWITCH_ROOM, packet.Id), nil
 
-	case ClientEnter:
-		return packSegments(2, CLIENT_ENTER, packet.Id), nil
+	case ClientJoin:
+		return packSegments(2, CLIENT_JOIN, packet.Id), nil
 	case ClientLeave:
 		return packSegments(2, CLIENT_LEAVE, packet.Id), nil
 	case Sprite:

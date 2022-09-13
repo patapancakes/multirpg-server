@@ -86,7 +86,7 @@ func (c *Client) joinRoom(roomId uint16) {
 
 	c.getRoomData()
 
-	packet, _ := protocol.Encode(protocol.ClientEnter{
+	packet, _ := protocol.Encode(protocol.ClientJoin{
 		Id: c.id,
 	})
 	c.room.broadcast(packet, c)
@@ -111,8 +111,8 @@ func (c *Client) getRoomData() {
 			continue
 		}
 
-		// Client Enter
-		packet, _ := protocol.Encode(protocol.ClientEnter{
+		// Client Join
+		packet, _ := protocol.Encode(protocol.ClientJoin{
 			Id: client.id,
 		})
 		c.conn.Write(packet)

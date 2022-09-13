@@ -27,7 +27,7 @@ const (
 
 	SWITCH_ROOM uint8 = 0x10
 
-	CLIENT_ENTER uint8 = 0x20
+	CLIENT_JOIN  uint8 = 0x20
 	CLIENT_LEAVE uint8 = 0x21
 	SPRITE       uint8 = 0x22
 	POSITION     uint8 = 0x23
@@ -56,7 +56,7 @@ type SwitchRoom struct {
 }
 
 // 0x20
-type ClientEnter struct {
+type ClientJoin struct {
 	Id uint16
 }
 
