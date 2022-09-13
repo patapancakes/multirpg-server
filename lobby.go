@@ -1,5 +1,7 @@
 package main
 
+import "math/rand"
+
 /*
 multirpg-server
 https://github.com/Gamizard/multirpg-server
@@ -25,6 +27,18 @@ type Lobby struct {
 
 	rooms     map[uint16]*Room
 	clientIds map[uint16]bool
+}
+
+func generateLobbyCode() string {
+	const runes = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	const runesLen = len(runes)
+
+	b := make([]byte, 6)
+	for i := range b {
+		b[i] = runes[rand.Intn(runesLen)]
+	}
+
+	return string(b)
 }
 
 func (s *Server) createLobby(gameHash []byte) *Lobby {

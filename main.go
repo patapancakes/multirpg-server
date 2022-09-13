@@ -23,7 +23,6 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 import (
 	"flag"
 	"fmt"
-	"math/rand"
 	"os"
 )
 
@@ -44,16 +43,4 @@ func readFlags() (*string, *int) {
 	flag.Parse()
 
 	return host, port
-}
-
-func generateLobbyCode() string {
-	const runes = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	const runesLen = len(runes)
-
-	b := make([]byte, 6)
-	for i := range b {
-		b[i] = runes[rand.Intn(runesLen)]
-	}
-
-	return string(b)
 }
