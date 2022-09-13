@@ -84,12 +84,12 @@ func (c *Client) joinRoom(roomId uint16) {
 	c.room = c.lobby.rooms[roomId]
 	c.lobby.rooms[roomId].clients[c] = true
 
-	c.getRoomData()
-
 	packet, _ := protocol.Encode(protocol.ClientJoin{
 		Id: c.id,
 	})
 	c.room.broadcast(packet, c)
+
+	c.getRoomData()
 }
 
 func (c *Client) leaveRoom() {
