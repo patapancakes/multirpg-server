@@ -51,9 +51,9 @@ func generateLobbyCode() string {
 	const runesLen = len(runes)
 
 	b := make([]byte, 6)
-    for i := range b {
-        b[i] = runes[rand.Intn(runesLen)]
-    }
+	for i := range b {
+		b[i] = runes[rand.Intn(runesLen)]
+	}
 
-    return string(b)
+	return string(b)
 }

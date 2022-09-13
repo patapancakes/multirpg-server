@@ -29,7 +29,7 @@ type Lobby struct {
 
 func (s *Server) createLobby(gameHash []byte) *Lobby {
 	return &Lobby{
-		gameHash:  gameHash,
+		gameHash: gameHash,
 
 		rooms:     make(map[uint16]*Room),
 		clientIds: make(map[uint16]bool),

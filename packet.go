@@ -60,14 +60,14 @@ func (p *Packet) process() {
 		switch packet := packet.(type) {
 		case protocol.SwitchRoom:
 			err = p.handleSwitchRoom(packet)
-	
+
 		case protocol.Sprite:
 			err = p.handleSprite(packet)
 		case protocol.Position:
 			err = p.handlePosition(packet)
 		case protocol.Speed:
 			err = p.handleSpeed(packet)
-	
+
 		default:
 			err = fmt.Errorf("bad packet type for room realm: %T", packet)
 		}
@@ -110,7 +110,6 @@ func (p *Packet) handleJoinLobby(joinLobby protocol.JoinLobby) error {
 
 	return nil
 }
-
 
 func (p *Packet) handleSwitchRoom(switchRoom protocol.SwitchRoom) error {
 	if p.sender.lobby.rooms[switchRoom.Id] == nil {

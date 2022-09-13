@@ -50,12 +50,10 @@ type JoinLobby struct {
 	LobbyCode []byte
 }
 
-
 // 0x10
 type SwitchRoom struct {
 	Id uint16
 }
-
 
 // 0x20
 type ClientEnter struct {
