@@ -46,7 +46,7 @@ func readFlags() (*string, *int) {
 	return host, port
 }
 
-func generateLobbyCode() []byte {
+func generateLobbyCode() string {
 	const runes = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	const runesLen = len(runes)
 
@@ -55,5 +55,5 @@ func generateLobbyCode() []byte {
         b[i] = runes[rand.Intn(runesLen)]
     }
 
-    return b
+    return string(b)
 }

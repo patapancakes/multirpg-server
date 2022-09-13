@@ -67,8 +67,8 @@ func (c *Client) listen() {
 	}
 }
 
-func (c *Client) joinLobby(lobbyCode []byte) {
-	c.lobby = c.server.lobbies[string(lobbyCode)]
+func (c *Client) joinLobby(lobbyCode string) {
+	c.lobby = c.server.lobbies[lobbyCode]
 
 	c.id = c.lobby.getFreeId()
 	c.lobby.clientIds[c.id] = true

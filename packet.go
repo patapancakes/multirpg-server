@@ -73,16 +73,16 @@ func (p *Packet) process() {
 func (p *Packet) handleNewLobby(newLobby protocol.NewLobby) error {
 	lobbyCode := generateLobbyCode()
 
-	for p.sender.server.lobbies[string(lobbyCode)] != nil {
+	for p.sender.server.lobbies[lobbyCode] != nil {
 		lobbyCode = generateLobbyCode()
 	}
 
-	p.sender.server.lobbies[string(lobbyCode)] = p.sender.server.createLobby(newLobby.GameHash)
+	p.sender.server.lobbies[lobbyCode] = p.sender.server.createLobby(newLobby.GameHash)
 
 	p.sender.joinLobby(lobbyCode)
 
 	packet, _ := protocol.Encode(protocol.NewLobbyS{
-		LobbyCode: lobbyCode,
+		LobbyCode: []byte(lobbyCode),
 	})
 
 	p.sender.conn.Write(packet)
@@ -100,7 +100,7 @@ func (p *Packet) handleJoinLobby(joinLobby protocol.JoinLobby) error {
 		return fmt.Errorf("hash mismatch: %s and %s", lobby.gameHash, joinLobby.GameHash)
 	}
 
-	p.sender.joinLobby(joinLobby.LobbyCode)
+	p.sender.joinLobby(string(joinLobby.LobbyCode))
 
 	return nil
 }
