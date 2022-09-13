@@ -46,7 +46,7 @@ func (p *Packet) process() {
 			err = p.handleJoinLobby(packet)
 
 		default:
-			err = fmt.Errorf("unknown packet type: %T", packet)
+			err = fmt.Errorf("bad packet type for server realm: %T", packet)
 		}
 	} else if p.sender.room == nil {
 		switch packet := packet.(type) {
@@ -54,7 +54,7 @@ func (p *Packet) process() {
 			err = p.handleSwitchRoom(packet)
 
 		default:
-			err = fmt.Errorf("unknown packet type: %T", packet)
+			err = fmt.Errorf("bad packet type for lobby realm: %T", packet)
 		}
 	} else {
 		switch packet := packet.(type) {
@@ -69,7 +69,7 @@ func (p *Packet) process() {
 			err = p.handleSpeed(packet)
 	
 		default:
-			err = fmt.Errorf("unknown packet type: %T", packet)
+			err = fmt.Errorf("bad packet type for room realm: %T", packet)
 		}
 	}
 
