@@ -117,7 +117,7 @@ func (p *Packet) handleSwitchRoom(switchRoom protocol.SwitchRoom) error {
 		p.sender.lobby.rooms[switchRoom.Id] = p.sender.lobby.createRoom(switchRoom.Id)
 	}
 
-	// Remove client from old room and broadcast disconnect packet
+	// Remove client from old room and broadcast client leave packet
 	p.sender.leaveRoom()
 
 	// Initialize client variables so other clients entering the new room don't get the old values

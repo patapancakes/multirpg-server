@@ -30,13 +30,13 @@ func Encode(packet any) ([]byte, error) {
 	case NewLobbyS:
 		return packSegments(7, NEW_LOBBY_S, packet.LobbyCode), nil
 
-	case Connect:
-		return packSegments(2, CONNECT, packet.Id), nil
-	case Disconnect:
-		return packSegments(2, DISCONNECT, packet.Id), nil
 	case SwitchRoom:
 		return packSegments(2, SWITCH_ROOM, packet.Id), nil
 
+	case ClientEnter:
+		return packSegments(2, CLIENT_ENTER, packet.Id), nil
+	case ClientLeave:
+		return packSegments(2, CLIENT_LEAVE, packet.Id), nil
 	case Sprite:
 		return packSegments(0, SPRITE, packet.Id, uint8(len(packet.Name)), packet.Name, packet.Index), nil
 	case Position:

@@ -25,13 +25,13 @@ const (
 	NEW_LOBBY_S uint8 = 0x01
 	JOIN_LOBBY  uint8 = 0x02
 
-	CONNECT     uint8 = 0x10
-	DISCONNECT  uint8 = 0x11
-	SWITCH_ROOM uint8 = 0x12
+	SWITCH_ROOM uint8 = 0x10
 
-	SPRITE   uint8 = 0x20
-	POSITION uint8 = 0x21
-	SPEED    uint8 = 0x22
+	CLIENT_ENTER uint8 = 0x20
+	CLIENT_LEAVE uint8 = 0x21
+	SPRITE       uint8 = 0x22
+	POSITION     uint8 = 0x23
+	SPEED        uint8 = 0x24
 )
 
 // 0x01 C2S
@@ -50,29 +50,31 @@ type JoinLobby struct {
 	LobbyCode []byte
 }
 
+
 // 0x10
-type Connect struct {
-	Id uint16
-}
-
-// 0x11
-type Disconnect struct {
-	Id uint16
-}
-
-// 0x12
 type SwitchRoom struct {
 	Id uint16
 }
 
+
 // 0x20
+type ClientEnter struct {
+	Id uint16
+}
+
+// 0x21
+type ClientLeave struct {
+	Id uint16
+}
+
+// 0x22
 type Sprite struct {
 	Id    uint16
 	Name  []byte
 	Index uint8
 }
 
-// 0x21
+// 0x23
 type Position struct {
 	Id        uint16
 	X         uint16
@@ -80,7 +82,7 @@ type Position struct {
 	Direction uint8
 }
 
-// 0x22
+// 0x24
 type Speed struct {
 	Id    uint16
 	Speed uint8
