@@ -72,7 +72,6 @@ func (p *Packet) process() {
 			err = fmt.Errorf("bad packet type for room realm: %T", packet)
 		}
 	}
-
 	if err != nil {
 		fmt.Printf("client %d packet error: %s\n", p.sender.id, err)
 	}
@@ -80,7 +79,6 @@ func (p *Packet) process() {
 
 func (p *Packet) handleNewLobby(newLobby protocol.NewLobby) error {
 	lobbyCode := generateLobbyCode()
-
 	for p.sender.server.lobbies[lobbyCode] != nil {
 		lobbyCode = generateLobbyCode()
 	}
