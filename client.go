@@ -76,6 +76,38 @@ func (c *Client) joinLobby(lobbyCode []byte) {
 
 func (c *Client) leaveLobby() {
 	delete(c.lobby.clientIds, c.id)
+
+	c.lobby = nil
+}
+
+func (c *Client) joinRoom(roomId uint16) {
+	c.room = c.lobby.rooms[roomId]          // set client room to new room
+	c.lobby.rooms[roomId].clients[c] = true // add to new room's client list
+
+	// Do not send room data or connect packets if in the default room
+	if roomId == 0 {
+		return
+	}
+
+	c.getRoomData()
+
+	packet, _ := protocol.Encode(protocol.Connect{
+		Id: c.id,
+	})
+	c.room.broadcast(packet, c)
+}
+
+func (c *Client) leaveRoom() {
+	delete(c.lobby.rooms[c.room.id].clients, c)
+
+	packet, _ := protocol.Encode(protocol.Disconnect{
+		Id: c.id,
+	})
+	c.room.broadcast(packet, c)
+
+	c.room.removeIfEmpty()
+
+	c.room = nil
 }
 
 func (c *Client) getRoomData() {
@@ -114,36 +146,6 @@ func (c *Client) getRoomData() {
 		})
 		c.conn.Write(packet)
 	}
-}
-
-func (c *Client) joinRoom(roomId uint16) {
-	c.room = c.lobby.rooms[roomId]          // set client room to new room
-	c.lobby.rooms[roomId].clients[c] = true // add to new room's client list
-
-	// Do not send room data or connect packets if in the default room
-	if roomId == 0 {
-		return
-	}
-
-	c.getRoomData()
-
-	packet, _ := protocol.Encode(protocol.Connect{
-		Id: c.id,
-	})
-	c.room.broadcast(packet, c)
-}
-
-func (c *Client) leaveRoom() {
-	delete(c.lobby.rooms[c.room.id].clients, c)
-
-	packet, _ := protocol.Encode(protocol.Disconnect{
-		Id: c.id,
-	})
-	c.room.broadcast(packet, c)
-
-	c.room.removeIfEmpty()
-
-	c.room = nil
 }
 
 func (c *Client) disconnect() {
