@@ -35,7 +35,7 @@ func (s *Server) createLobby(gameHash []byte) *Lobby {
 		clientIds: make(map[uint16]bool),
 	}
 
-	// Room 0 is the room clients are put in when they first connect
+	// Room 0 is the room clients are put in when they first join the lobby
 	// Clients are expected to send a switch room packet to join a game room
 	lobby.rooms[0] = lobby.createRoom(0)
 
