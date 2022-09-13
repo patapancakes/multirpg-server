@@ -77,7 +77,7 @@ func (p *Packet) handleNewLobby(newLobby protocol.NewLobby) error {
 		lobbyCode = generateLobbyCode()
 	}
 
-	p.sender.server.lobbies[string(lobbyCode)] = p.sender.server.createLobby(lobbyCode)
+	p.sender.server.lobbies[string(lobbyCode)] = p.sender.server.createLobby(newLobby.GameHash)
 
 	p.sender.joinLobby(lobbyCode)
 
