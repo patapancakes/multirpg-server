@@ -21,6 +21,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
 import (
+	"bytes"
 	"fmt"
 
 	"github.com/Gamizard/multirpg-server/protocol"
@@ -98,7 +99,7 @@ func (p *Packet) handleJoinLobby(joinLobby protocol.JoinLobby) error {
 		return fmt.Errorf("invalid lobby code: %s", joinLobby.LobbyCode)
 	}
 
-	if string(lobby.gameHash) != string(joinLobby.GameHash) {
+	if !bytes.Equal(lobby.gameHash, joinLobby.GameHash) {
 		return fmt.Errorf("game hash mismatch: %s and %s", lobby.gameHash, joinLobby.GameHash)
 	}
 
