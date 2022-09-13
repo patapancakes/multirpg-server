@@ -113,7 +113,9 @@ func (p *Packet) handleSwitchRoom(switchRoom protocol.SwitchRoom) error {
 	}
 
 	// Remove client from old room and broadcast client leave packet
-	p.sender.leaveRoom()
+	if p.sender.room != nil {
+		p.sender.leaveRoom()
+	}
 
 	// Initialize client variables so other clients entering the new room don't get the old values
 	// Redundant most of the time but prevents some visual weirdness
