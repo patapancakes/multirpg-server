@@ -22,7 +22,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 const (
 	NEW_LOBBY   uint8 = 0x01
-	NEW_LOBBY_S uint8 = 0x01
+	NEW_LOBBY_R uint8 = 0x01
 	JOIN_LOBBY  uint8 = 0x02
 
 	SWITCH_ROOM uint8 = 0x10
@@ -40,7 +40,7 @@ type NewLobby struct {
 }
 
 // 0x01 S2C
-type NewLobbyS struct {
+type NewLobbyR struct {
 	LobbyCode []byte
 }
 

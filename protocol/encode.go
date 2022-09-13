@@ -27,8 +27,8 @@ import (
 
 func Encode(packet any) ([]byte, error) {
 	switch packet := packet.(type) {
-	case NewLobbyS:
-		return packSegments(7, NEW_LOBBY_S, packet.LobbyCode), nil
+	case NewLobbyR:
+		return packSegments(7, NEW_LOBBY_R, packet.LobbyCode), nil
 
 	case SwitchRoom:
 		return packSegments(2, SWITCH_ROOM, packet.Id), nil

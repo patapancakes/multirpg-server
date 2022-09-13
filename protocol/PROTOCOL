@@ -1,6 +1,6 @@
 ----Server to Client Packets
 --Server
-0x01 - New Lobby    - 0x01 | [6]byte (lobbyCode)
+0x01 - New Lobby R  - 0x01 | [6]byte (lobbyCode)
 --Room
 0x20 - Client Enter - 0x20 | uint16 (clientId)
 0x21 - Client Leave - 0x21 | uint16 (clientId)

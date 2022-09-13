@@ -84,7 +84,7 @@ func (p *Packet) handleNewLobby(newLobby protocol.NewLobby) error {
 
 	p.sender.joinLobby(lobbyCode)
 
-	packet, _ := protocol.Encode(protocol.NewLobbyS{
+	packet, _ := protocol.Encode(protocol.NewLobbyR{
 		LobbyCode: []byte(lobbyCode),
 	})
 
