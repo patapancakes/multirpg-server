@@ -36,11 +36,6 @@ func (l *Lobby) createRoom(id uint16) *Room {
 }
 
 func (r *Room) broadcast(data []byte, sender *Client) {
-	// Packet broadcasting is disabled while in the default room
-	if r.id == 0 {
-		return
-	}
-
 	for client := range r.clients {
 		if client == sender {
 			continue

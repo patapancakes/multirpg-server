@@ -48,6 +48,14 @@ func (p *Packet) process() {
 		default:
 			err = fmt.Errorf("unknown packet type: %T", packet)
 		}
+	} else if p.sender.room == nil {
+		switch packet := packet.(type) {
+		case protocol.SwitchRoom:
+			err = p.handleSwitchRoom(packet)
+
+		default:
+			err = fmt.Errorf("unknown packet type: %T", packet)
+		}
 	} else {
 		switch packet := packet.(type) {
 		case protocol.SwitchRoom:
