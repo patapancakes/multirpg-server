@@ -44,7 +44,6 @@ func (p *Packet) process() {
 			err = p.handleNewLobby(packet)
 		case protocol.JoinLobby:
 			err = p.handleJoinLobby(packet)
-
 		default:
 			err = fmt.Errorf("bad packet type for server realm: %T", packet)
 		}
@@ -52,7 +51,6 @@ func (p *Packet) process() {
 		switch packet := packet.(type) {
 		case protocol.SwitchRoom:
 			err = p.handleSwitchRoom(packet)
-
 		default:
 			err = fmt.Errorf("bad packet type for lobby realm: %T", packet)
 		}
@@ -60,14 +58,12 @@ func (p *Packet) process() {
 		switch packet := packet.(type) {
 		case protocol.SwitchRoom:
 			err = p.handleSwitchRoom(packet)
-
 		case protocol.Sprite:
 			err = p.handleSprite(packet)
 		case protocol.Position:
 			err = p.handlePosition(packet)
 		case protocol.Speed:
 			err = p.handleSpeed(packet)
-
 		default:
 			err = fmt.Errorf("bad packet type for room realm: %T", packet)
 		}
