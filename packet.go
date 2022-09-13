@@ -73,6 +73,10 @@ func (p *Packet) process() {
 func (p *Packet) handleNewLobby(newLobby protocol.NewLobby) error {
 	lobbyCode := generateLobbyCode()
 
+	for p.sender.server.lobbies[string(lobbyCode)] != nil {
+		lobbyCode = generateLobbyCode()
+	}
+
 	p.sender.server.lobbies[string(lobbyCode)] = p.sender.server.createLobby(lobbyCode)
 
 	p.sender.joinLobby(lobbyCode)
