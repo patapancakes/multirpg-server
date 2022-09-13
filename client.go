@@ -81,8 +81,8 @@ func (c *Client) leaveLobby() {
 }
 
 func (c *Client) joinRoom(roomId uint16) {
-	c.room = c.lobby.rooms[roomId]          // set client room to new room
-	c.lobby.rooms[roomId].clients[c] = true // add to new room's client list
+	c.room = c.lobby.rooms[roomId]
+	c.lobby.rooms[roomId].clients[c] = true
 
 	c.getRoomData()
 
