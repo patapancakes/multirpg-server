@@ -2,7 +2,7 @@
 --Server
 0x01 - New Lobby R  - 0x01 | [6]byte (lobbyCode)
 --Room
-0x20 - Client Join - 0x20 | uint16 (clientId)
+0x20 - Client Join  - 0x20 | uint16 (clientId)
 0x21 - Client Leave - 0x21 | uint16 (clientId)
 0x22 - Sprite       - 0x22 | uint16 (clientId) | uint8 (length) | byte[] (sprite) | uint8 (index)
 0x23 - Position     - 0x23 | uint16 (clientId) | uint16 (x) | uint16 (y) | uint8 (direction)
