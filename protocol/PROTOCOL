@@ -4,7 +4,7 @@
 --Room
 0x20 - Client Join  - 0x20 | uint16 (clientId)
 0x21 - Client Leave - 0x21 | uint16 (clientId)
-0x22 - Sprite       - 0x22 | uint16 (clientId) | uint8 (length) | byte[] (sprite) | uint8 (index)
+0x22 - Sprite       - 0x22 | uint16 (clientId) | uint8 (length) | []byte (sprite) | uint8 (index)
 0x23 - Position     - 0x23 | uint16 (clientId) | uint16 (x) | uint16 (y) | uint8 (direction)
 0x24 - Speed        - 0x24 | uint16 (clientId) | uint8 (speed)
 
@@ -15,6 +15,6 @@
 --Lobby
 0x10 - Switch Room  - 0x10 | uint16 (room)
 --Room
-0x22 - Sprite       - 0x22 | uint8 (length) | byte[] (sprite) | uint8 (index)
+0x22 - Sprite       - 0x22 | uint8 (length) | []byte (sprite) | uint8 (index)
 0x23 - Position     - 0x23 | uint16 (x) | uint16 (y) | uint8 (direction)
 0x24 - Speed        - 0x24 | uint8 (speed)
