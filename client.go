@@ -51,7 +51,11 @@ type Client struct {
 // Listen for incoming packets from the client
 func (c *Client) listen() {
 	defer func() {
-		c.conn.Close()
+		if err := c.conn.Close(); err != nil && err != net.ErrClosed {
+			fmt.Printf("Connection from %s failed to close: %s\n", c.conn.RemoteAddr().String(), err)
+		} else {
+			fmt.Printf("Connection from %s closed\n", c.conn.RemoteAddr().String())
+		}
 	}()
 	for {
 		buf := make([]byte, 300)
@@ -67,7 +71,11 @@ func (c *Client) listen() {
 
 func (c *Client) packetReader() {
 	defer func() {
-		c.conn.Close()
+		if err := c.conn.Close(); err != nil && err != net.ErrClosed {
+			fmt.Printf("Connection from %s failed to close: %s\n", c.conn.RemoteAddr().String(), err)
+		} else {
+			fmt.Printf("Connection from %s closed\n", c.conn.RemoteAddr().String())
+		}
 	}()
 	for {
 		data, ok := <-c.receive
@@ -90,7 +98,11 @@ func (c *Client) packetReader() {
 
 func (c *Client) packetWriter() {
 	defer func() {
-		c.conn.Close()
+		if err := c.conn.Close(); err != nil && err != net.ErrClosed {
+			fmt.Printf("Connection from %s failed to close: %s\n", c.conn.RemoteAddr().String(), err)
+		} else {
+			fmt.Printf("Connection from %s closed\n", c.conn.RemoteAddr().String())
+		}
 	}()
 	for {
 		data, ok := <-c.send
@@ -189,6 +201,4 @@ func (c *Client) disconnect() {
 	if c.lobby != nil {
 		c.leaveLobby()
 	}
-
-	fmt.Printf("Connection from %s closed\n", c.conn.RemoteAddr().String())
 }
