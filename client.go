@@ -196,9 +196,6 @@ func (c *Client) disconnect() {
 
 	if c.lobby != nil {
 		c.leaveLobby()
-
-		// Release client id
-		delete(c.lobby.clientIds, c.id)
 	}
 
 	fmt.Printf("Connection from %s closed\n", c.conn.RemoteAddr().String())
