@@ -173,8 +173,10 @@ func (c *Client) getRoomData() {
 }
 
 func (c *Client) closeConn() {
-	if err := c.conn.Close(); err != nil && err != net.ErrClosed {
-		fmt.Printf("Connection from %s failed to close: %s\n", c.conn.RemoteAddr().String(), err)
+	if err := c.conn.Close(); err != nil {
+		if err != net.ErrClosed {
+			fmt.Printf("Connection from %s failed to close: %s\n", c.conn.RemoteAddr().String(), err)
+		}
 	} else {
 		fmt.Printf("Connection from %s closed\n", c.conn.RemoteAddr().String())
 	}
