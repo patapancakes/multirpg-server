@@ -50,11 +50,16 @@ func (s *Server) start(host *string, port *int) error {
 
 func (s *Server) handleConnection(conn net.Conn) {
 	client := &Client{
-		conn:   conn,
-		server: s,
+		conn:    conn,
+		send:    make(chan []byte),
+		receive: make(chan []byte),
+		server:  s,
 	}
 
 	fmt.Printf("Connection from %s\n", conn.RemoteAddr().String())
+
+	go client.packetWriter()
+	go client.packetReader()
 
 	client.listen()
 

@@ -29,11 +29,15 @@ import (
 
 type Client struct {
 	conn net.Conn
-	id   uint16
+
+	send    chan []byte
+	receive chan []byte
 
 	server *Server
 	lobby  *Lobby
 	room   *Room
+
+	id uint16
 
 	sprite      []byte
 	spriteIndex uint8
@@ -46,6 +50,9 @@ type Client struct {
 
 // Listen for incoming packets from the client
 func (c *Client) listen() {
+	defer func() {
+		c.conn.Close()
+	}()
 	for {
 		buf := make([]byte, 300)
 
@@ -54,16 +61,52 @@ func (c *Client) listen() {
 			return
 		}
 
-		if n < 1 {
-			continue
-		}
+		c.receive <- buf[:n]
+	}
+}
 
-		packet := &Packet{
-			sender: c,
-			data:   buf[:n],
-		}
+func (c *Client) packetReader() {
+	defer func() {
+		c.conn.Close()
+	}()
+	for {
+		select {
+		case data, ok := <-c.receive:
+			if !ok {
+				return
+			}
 
-		packet.process()
+			if len(data) < 1 {
+				continue
+			}
+
+			packet := &Packet{
+				sender: c,
+				data:   data,
+			}
+
+			packet.process()
+		default:
+			return
+		}
+	}
+}
+
+func (c *Client) packetWriter() {
+	defer func() {
+		c.conn.Close()
+	}()
+	for {
+		select {
+		case data, ok := <-c.send:
+			if !ok {
+				return
+			}
+
+			c.conn.Write(data)
+		default:
+			return
+		}
 	}
 }
 
@@ -115,7 +158,7 @@ func (c *Client) getRoomData() {
 		packet, _ := protocol.Encode(protocol.ClientJoin{
 			Id: client.id,
 		})
-		c.conn.Write(packet)
+		c.send <- packet
 
 		// Sprite
 		packet, _ = protocol.Encode(protocol.Sprite{
@@ -123,7 +166,7 @@ func (c *Client) getRoomData() {
 			Name:  client.sprite,
 			Index: client.spriteIndex,
 		})
-		c.conn.Write(packet)
+		c.send <- packet
 
 		// Position
 		packet, _ = protocol.Encode(protocol.Position{
@@ -132,28 +175,31 @@ func (c *Client) getRoomData() {
 			Y:         client.y,
 			Direction: client.direction,
 		})
-		c.conn.Write(packet)
+		c.send <- packet
 
 		// Speed
 		packet, _ = protocol.Encode(protocol.Speed{
 			Id:    client.id,
 			Speed: client.speed,
 		})
-		c.conn.Write(packet)
+		c.send <- packet
 	}
 }
 
 func (c *Client) disconnect() {
-	c.leaveRoom()
-	c.leaveLobby()
+	close(c.send)
+	close(c.receive)
 
-	// Release client id
-	delete(c.lobby.clientIds, c.id)
-
-	if err := c.conn.Close(); err != nil {
-		fmt.Printf("Connection from %s (client %d) failed to close: %s\n", c.conn.RemoteAddr().String(), c.id, err)
-		return
+	if c.room != nil {
+		c.leaveRoom()
 	}
 
-	fmt.Printf("Connection from %s (client %d) closed\n", c.conn.RemoteAddr().String(), c.id)
+	if c.lobby != nil {
+		c.leaveLobby()
+
+		// Release client id
+		delete(c.lobby.clientIds, c.id)
+	}
+
+	fmt.Printf("Connection from %s closed\n", c.conn.RemoteAddr().String())
 }
