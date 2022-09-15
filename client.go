@@ -70,25 +70,21 @@ func (c *Client) packetReader() {
 		c.conn.Close()
 	}()
 	for {
-		select {
-		case data, ok := <-c.receive:
-			if !ok {
-				return
-			}
-
-			if len(data) < 1 {
-				continue
-			}
-
-			packet := &Packet{
-				sender: c,
-				data:   data,
-			}
-
-			packet.process()
-		default:
+		data, ok := <-c.receive
+		if !ok {
 			return
 		}
+
+		if len(data) < 1 {
+			continue
+		}
+
+		packet := &Packet{
+			sender: c,
+			data:   data,
+		}
+
+		packet.process()
 	}
 }
 
@@ -97,16 +93,12 @@ func (c *Client) packetWriter() {
 		c.conn.Close()
 	}()
 	for {
-		select {
-		case data, ok := <-c.send:
-			if !ok {
-				return
-			}
-
-			c.conn.Write(data)
-		default:
+		data, ok := <-c.send
+		if !ok {
 			return
 		}
+
+		c.conn.Write(data)
 	}
 }
 
