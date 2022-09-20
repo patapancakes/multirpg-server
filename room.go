@@ -20,33 +20,46 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 package main
 
+import "sync"
+
 type Room struct {
 	lobby *Lobby
 	id    uint16
 
-	clients map[*Client]bool
+	clients sync.Map
 }
 
 func (l *Lobby) createRoom(id uint16) *Room {
 	return &Room{
 		lobby:   l,
 		id:      id,
-		clients: make(map[*Client]bool),
 	}
 }
 
 func (r *Room) broadcast(data []byte, sender *Client) {
-	for client := range r.clients {
+	r.clients.Range(func(k, _ any) bool {
+		client := k.(*Client)
+
 		if client == sender {
-			continue
+			return true
 		}
 
 		client.conn.Write(data)
-	}
+
+		return true
+	})
 }
 
 func (r *Room) removeIfEmpty() {
-	if len(r.clients) > 0 {
+	var hasPlayers bool
+
+	r.clients.Range(func(_, _ any) bool {
+		hasPlayers = true
+
+		return false
+	})
+
+	if hasPlayers {
 		return
 	}
 

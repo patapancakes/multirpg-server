@@ -113,7 +113,7 @@ func (c *Client) leaveLobby() {
 
 func (c *Client) joinRoom(roomId uint16) {
 	c.room = c.lobby.rooms[roomId]
-	c.lobby.rooms[roomId].clients[c] = true
+	c.lobby.rooms[roomId].clients.Store(c, nil)
 
 	packet, _ := protocol.Encode(protocol.ClientJoin{
 		Id: c.id,
@@ -124,7 +124,7 @@ func (c *Client) joinRoom(roomId uint16) {
 }
 
 func (c *Client) leaveRoom() {
-	delete(c.lobby.rooms[c.room.id].clients, c)
+	c.lobby.rooms[c.room.id].clients.Delete(c)
 
 	packet, _ := protocol.Encode(protocol.ClientLeave{
 		Id: c.id,
@@ -137,9 +137,11 @@ func (c *Client) leaveRoom() {
 }
 
 func (c *Client) getRoomData() {
-	for client := range c.room.clients {
+	c.room.clients.Range(func(k, _ any) bool {
+		client := k.(*Client)
+
 		if client == c {
-			continue
+			return true
 		}
 
 		// Client Join
@@ -171,7 +173,9 @@ func (c *Client) getRoomData() {
 			Speed: client.speed,
 		})
 		c.send <- packet
-	}
+
+		return true
+	})
 }
 
 func (c *Client) closeConn() {
