@@ -136,9 +136,7 @@ func (c *Client) joinRoom(roomId uint16) {
 }
 
 func (c *Client) leaveRoom() {
-	room, _ := c.lobby.rooms.Load(c.room.id)
-
-	room.(*Room).clients.Delete(c)
+	c.room.clients.Delete(c)
 
 	packet, _ := protocol.Encode(protocol.ClientLeave{
 		Id: c.id,
