@@ -29,7 +29,7 @@ type Lobby struct {
 	gameHash []byte
 
 	rooms     sync.Map
-	clientIds map[uint16]bool
+	clientIds sync.Map
 }
 
 func generateLobbyCode() string {
@@ -47,14 +47,12 @@ func generateLobbyCode() string {
 func (s *Server) createLobby(gameHash []byte) *Lobby {
 	return &Lobby{
 		gameHash: gameHash,
-
-		clientIds: make(map[uint16]bool),
 	}
 }
 
 func (l *Lobby) getFreeId() uint16 {
 	for i := uint16(0); i < 0xFFFF; i++ {
-		if _, ok := l.clientIds[i]; !ok {
+		if _, ok := l.clientIds.Load(i); !ok {
 			return i
 		}
 	}

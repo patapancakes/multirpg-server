@@ -102,11 +102,11 @@ func (c *Client) joinLobby(lobbyCode string) {
 	}
 
 	c.id = c.lobby.getFreeId()
-	c.lobby.clientIds[c.id] = true
+	c.lobby.clientIds.Store(c.id, nil)
 }
 
 func (c *Client) leaveLobby() {
-	delete(c.lobby.clientIds, c.id)
+	c.lobby.clientIds.Delete(c.id)
 
 	c.lobby = nil
 }
