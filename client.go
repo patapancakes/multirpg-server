@@ -116,6 +116,8 @@ func (c *Client) joinLobby(lobbyCode string) {
 func (c *Client) leaveLobby() {
 	c.lobby.clientIds.Delete(c.id)
 
+	c.lobby.removeIfEmpty()
+
 	c.lobby = nil
 }
 
