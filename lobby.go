@@ -20,12 +20,15 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 package main
 
-import "math/rand"
+import (
+	"math/rand"
+	"sync"
+)
 
 type Lobby struct {
 	gameHash []byte
 
-	rooms     map[uint16]*Room
+	rooms     sync.Map
 	clientIds map[uint16]bool
 }
 
@@ -45,7 +48,6 @@ func (s *Server) createLobby(gameHash []byte) *Lobby {
 	return &Lobby{
 		gameHash: gameHash,
 
-		rooms:     make(map[uint16]*Room),
 		clientIds: make(map[uint16]bool),
 	}
 }

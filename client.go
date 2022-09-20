@@ -112,8 +112,10 @@ func (c *Client) leaveLobby() {
 }
 
 func (c *Client) joinRoom(roomId uint16) {
-	c.room = c.lobby.rooms[roomId]
-	c.lobby.rooms[roomId].clients.Store(c, nil)
+	room, _ := c.lobby.rooms.Load(roomId)
+
+	c.room = room.(*Room)
+	c.room.clients.Store(c, nil)
 
 	packet, _ := protocol.Encode(protocol.ClientJoin{
 		Id: c.id,
@@ -124,7 +126,9 @@ func (c *Client) joinRoom(roomId uint16) {
 }
 
 func (c *Client) leaveRoom() {
-	c.lobby.rooms[c.room.id].clients.Delete(c)
+	room, _ := c.lobby.rooms.Load(c.room.id)
+
+	room.(*Room).clients.Delete(c)
 
 	packet, _ := protocol.Encode(protocol.ClientLeave{
 		Id: c.id,

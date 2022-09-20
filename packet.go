@@ -108,8 +108,8 @@ func (p *Packet) handleJoinLobby(joinLobby protocol.JoinLobby) error {
 }
 
 func (p *Packet) handleSwitchRoom(switchRoom protocol.SwitchRoom) error {
-	if p.sender.lobby.rooms[switchRoom.Id] == nil {
-		p.sender.lobby.rooms[switchRoom.Id] = p.sender.lobby.createRoom(switchRoom.Id)
+	if _, ok := p.sender.lobby.rooms.Load(switchRoom.Id); ok{
+		p.sender.lobby.rooms.Store(switchRoom.Id, p.sender.lobby.createRoom(switchRoom.Id))
 	}
 
 	// Remove client from old room and broadcast client leave packet

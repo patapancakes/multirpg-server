@@ -63,5 +63,5 @@ func (r *Room) removeIfEmpty() {
 		return
 	}
 
-	r.lobby.rooms[r.id] = nil
+	r.lobby.rooms.Delete(r.id)
 }
