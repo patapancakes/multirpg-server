@@ -76,11 +76,10 @@ func (p *Packet) process() {
 
 func (p *Packet) handleNewLobby(newLobby protocol.NewLobby) error {
 	lobbyCode := generateLobbyCode()
-	for p.sender.server.lobbies[lobbyCode] != nil {
-		lobbyCode = generateLobbyCode()
-	}
 
-	p.sender.server.lobbies[lobbyCode] = p.sender.server.createLobby(newLobby.GameHash)
+	// TODO: Check if lobby code is in use
+
+	p.sender.server.lobbies.Store(lobbyCode, p.sender.server.createLobby(newLobby.GameHash))
 
 	p.sender.joinLobby(lobbyCode)
 
@@ -94,13 +93,13 @@ func (p *Packet) handleNewLobby(newLobby protocol.NewLobby) error {
 }
 
 func (p *Packet) handleJoinLobby(joinLobby protocol.JoinLobby) error {
-	lobby := p.sender.server.lobbies[string(joinLobby.LobbyCode)]
-	if lobby == nil {
+	lobby, ok := p.sender.server.lobbies.Load(string(joinLobby.LobbyCode))
+	if !ok {
 		return fmt.Errorf("invalid lobby code: %s", joinLobby.LobbyCode)
 	}
 
-	if !bytes.Equal(lobby.gameHash, joinLobby.GameHash) {
-		return fmt.Errorf("game hash mismatch: %s and %s", lobby.gameHash, joinLobby.GameHash)
+	if gameHash := lobby.(*Lobby).gameHash; !bytes.Equal(gameHash, joinLobby.GameHash) {
+		return fmt.Errorf("game hash mismatch: %s and %s", gameHash, joinLobby.GameHash)
 	}
 
 	p.sender.joinLobby(string(joinLobby.LobbyCode))

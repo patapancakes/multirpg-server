@@ -97,7 +97,9 @@ func (c *Client) packetWriter() {
 }
 
 func (c *Client) joinLobby(lobbyCode string) {
-	c.lobby = c.server.lobbies[lobbyCode]
+	if lobby, ok := c.server.lobbies.Load(lobbyCode); ok {
+		c.lobby = lobby.(*Lobby)
+	}
 
 	c.id = c.lobby.getFreeId()
 	c.lobby.clientIds[c.id] = true

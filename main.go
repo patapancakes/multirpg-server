@@ -27,9 +27,7 @@ import (
 )
 
 func main() {
-	server := &Server{
-		lobbies: make(map[string]*Lobby),
-	}
+	server := &Server{}
 
 	if err := server.start(readFlags()); err != nil {
 		fmt.Printf("server error: %s\n", err)

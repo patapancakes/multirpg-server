@@ -23,10 +23,11 @@ package main
 import (
 	"fmt"
 	"net"
+	"sync"
 )
 
 type Server struct {
-	lobbies map[string]*Lobby
+	lobbies sync.Map
 }
 
 func (s *Server) start(host *string, port *int) error {
