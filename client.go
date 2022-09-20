@@ -105,9 +105,9 @@ func (c *Client) sendPacket(data []byte) {
 }
 
 func (c *Client) joinLobby(lobbyCode string) {
-	if lobby, ok := c.server.lobbies.Load(lobbyCode); ok {
-		c.lobby = lobby.(*Lobby)
-	}
+	lobby, _ := c.server.lobbies.Load(lobbyCode)
+
+	c.lobby = lobby.(*Lobby)
 
 	c.id = c.lobby.getFreeId()
 	c.lobby.clientIds.Store(c.id, nil)
