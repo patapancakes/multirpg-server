@@ -1,5 +1,3 @@
-package main
-
 /*
 multirpg-server
 https://github.com/Gamizard/multirpg-server
@@ -19,6 +17,8 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
+
+package main
 
 import (
 	"fmt"
