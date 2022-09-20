@@ -77,7 +77,13 @@ func (p *Packet) process() {
 func (p *Packet) handleNewLobby(newLobby protocol.NewLobby) error {
 	lobbyCode := generateLobbyCode()
 
-	// TODO: Check if lobby code is in use
+	for {
+		if _, ok := p.sender.server.lobbies.Load(string(lobbyCode)); !ok {
+			break
+		}
+
+		lobbyCode = generateLobbyCode()
+	}
 
 	p.sender.server.lobbies.Store(lobbyCode, p.sender.server.createLobby(newLobby.GameHash))
 
