@@ -108,7 +108,7 @@ func (p *Packet) handleJoinLobby(joinLobby protocol.JoinLobby) error {
 }
 
 func (p *Packet) handleSwitchRoom(switchRoom protocol.SwitchRoom) error {
-	if _, ok := p.sender.lobby.rooms.Load(switchRoom.Id); ok{
+	if _, ok := p.sender.lobby.rooms.Load(switchRoom.Id); ok {
 		p.sender.lobby.rooms.Store(switchRoom.Id, p.sender.lobby.createRoom(switchRoom.Id))
 	}
 

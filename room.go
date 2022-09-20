@@ -31,8 +31,8 @@ type Room struct {
 
 func (l *Lobby) createRoom(id uint16) *Room {
 	return &Room{
-		lobby:   l,
-		id:      id,
+		lobby: l,
+		id:    id,
 	}
 }
 
