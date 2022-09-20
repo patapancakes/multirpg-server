@@ -96,6 +96,14 @@ func (c *Client) packetWriter() {
 	}
 }
 
+func (c *Client) sendPacket(data []byte) {
+	select {
+	case c.send <- data:
+	default:
+		c.closeConn()
+	}
+}
+
 func (c *Client) joinLobby(lobbyCode string) {
 	if lobby, ok := c.server.lobbies.Load(lobbyCode); ok {
 		c.lobby = lobby.(*Lobby)
@@ -152,7 +160,7 @@ func (c *Client) getRoomData() {
 		packet, _ := protocol.Encode(protocol.ClientJoin{
 			Id: client.id,
 		})
-		c.send <- packet
+		c.sendPacket(packet)
 
 		// Sprite
 		packet, _ = protocol.Encode(protocol.Sprite{
@@ -160,7 +168,7 @@ func (c *Client) getRoomData() {
 			Name:  client.sprite,
 			Index: client.spriteIndex,
 		})
-		c.send <- packet
+		c.sendPacket(packet)
 
 		// Position
 		packet, _ = protocol.Encode(protocol.Position{
@@ -169,14 +177,14 @@ func (c *Client) getRoomData() {
 			Y:         client.y,
 			Direction: client.direction,
 		})
-		c.send <- packet
+		c.sendPacket(packet)
 
 		// Speed
 		packet, _ = protocol.Encode(protocol.Speed{
 			Id:    client.id,
 			Speed: client.speed,
 		})
-		c.send <- packet
+		c.sendPacket(packet)
 
 		return true
 	})

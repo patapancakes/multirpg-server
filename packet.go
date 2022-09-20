@@ -87,7 +87,7 @@ func (p *Packet) handleNewLobby(newLobby protocol.NewLobby) error {
 		LobbyCode: []byte(lobbyCode),
 	})
 
-	p.sender.send <- packet
+	p.sender.sendPacket(packet)
 
 	return nil
 }

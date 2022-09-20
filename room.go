@@ -44,7 +44,7 @@ func (r *Room) broadcast(data []byte, sender *Client) {
 			return true
 		}
 
-		client.conn.Write(data)
+		client.sendPacket(data)
 
 		return true
 	})
