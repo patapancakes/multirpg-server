@@ -30,6 +30,8 @@ import (
 type Client struct {
 	conn net.Conn
 
+	terminate chan bool
+
 	send    chan []byte
 	receive chan []byte
 
@@ -50,59 +52,70 @@ type Client struct {
 
 // Listen for incoming packets from the client
 func (c *Client) listen() {
-	defer c.closeConn()
+	defer func() { c.terminate <- true }()
 	for {
-		buf := make([]byte, 300)
-
-		n, err := c.conn.Read(buf)
-		if err != nil {
+		select {
+		case <-c.terminate:
 			return
-		}
+		default:
+			buf := make([]byte, 300)
 
-		c.receive <- buf[:n]
+			n, err := c.conn.Read(buf)
+			if err != nil {
+				return
+			}
+
+			c.receive <- buf[:n]
+		}
 	}
 }
 
 func (c *Client) packetReader() {
-	defer c.closeConn()
+	defer func() { c.terminate <- true }()
 	for {
-		data, ok := <-c.receive
-		if !ok {
+		select {
+		case <-c.terminate:
 			return
-		}
+		case data, ok := <-c.receive:
+			if !ok {
+				return
+			}
 
-		if len(data) < 1 {
-			continue
-		}
+			if len(data) < 1 {
+				continue
+			}
 
-		packet := &Packet{
-			sender: c,
-			data:   data,
-		}
+			packet := &Packet{
+				sender: c,
+				data:   data,
+			}
 
-		packet.process()
+			packet.process()
+		}
 	}
 }
 
 func (c *Client) packetWriter() {
-	defer c.closeConn()
+	defer func() { c.terminate <- true }()
 	for {
-		data, ok := <-c.send
-		if !ok {
+		select {
+		case <-c.terminate:
 			return
-		}
+		case data, ok := <-c.send:
+			if !ok {
+				return
+			}
 
-		c.conn.Write(data)
+			c.conn.Write(data)
+		}
 	}
 }
 
 func (c *Client) sendPacket(data []byte) {
-	defer recover()
-
 	select {
 	case c.send <- data:
 	default:
-		c.closeConn()
+		c.terminate <- true
 	}
 }
 
@@ -192,19 +205,12 @@ func (c *Client) getRoomData() {
 	})
 }
 
-func (c *Client) closeConn() {
+func (c *Client) disconnect() {
 	if err := c.conn.Close(); err != nil {
-		if err != net.ErrClosed {
-			fmt.Printf("Connection from %s failed to close: %s\n", c.conn.RemoteAddr().String(), err)
-		}
+		fmt.Printf("Connection from %s failed to close: %s\n", c.conn.RemoteAddr().String(), err)
 	} else {
 		fmt.Printf("Connection from %s closed\n", c.conn.RemoteAddr().String())
 	}
-}
-
-func (c *Client) disconnect() {
-	close(c.send)
-	close(c.receive)
 
 	if c.room != nil {
 		c.leaveRoom()
