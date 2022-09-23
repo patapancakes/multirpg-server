@@ -97,6 +97,8 @@ func (c *Client) packetWriter() {
 }
 
 func (c *Client) sendPacket(data []byte) {
+	defer recover()
+
 	select {
 	case c.send <- data:
 	default:
