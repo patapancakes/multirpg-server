@@ -90,7 +90,7 @@ func decodeSprite(data []byte) (Sprite, error) {
 
 	return Sprite{
 		Name:  data[2 : 2+nameLength],
-		Index: uint8(data[2+nameLength:][0]),
+		Index: data[2+nameLength:][0],
 	}, nil
 }
 
@@ -102,7 +102,7 @@ func decodePosition(data []byte) (Position, error) {
 	return Position{
 		X:         binary.LittleEndian.Uint16(data[1:3]),
 		Y:         binary.LittleEndian.Uint16(data[3:5]),
-		Direction: uint8(data[5:][0]),
+		Direction: data[5:][0],
 	}, nil
 }
 
@@ -112,6 +112,6 @@ func decodeSpeed(data []byte) (Speed, error) {
 	}
 
 	return Speed{
-		Speed: uint8(data[1:][0]),
+		Speed: data[1:][0],
 	}, nil
 }

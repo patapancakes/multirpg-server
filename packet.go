@@ -78,7 +78,7 @@ func (p *Packet) handleNewLobby(newLobby protocol.NewLobby) error {
 	lobbyCode := generateLobbyCode()
 
 	for {
-		if _, ok := p.sender.server.lobbies.Load(string(lobbyCode)); !ok {
+		if _, ok := p.sender.server.lobbies.Load(lobbyCode); !ok {
 			break
 		}
 
